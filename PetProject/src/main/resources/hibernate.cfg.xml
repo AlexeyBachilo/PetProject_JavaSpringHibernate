@@ -1,0 +1,15 @@
+<hibernate-configuration xmlns="http://www.hibernate.org/xsd/orm/cfg">
+    <session-factory>
+        <property name="connection.url">jdbc:mysql://localhost/userDB</property>
+        <property name="connection.User_class">com.petproject.entity.User</property>
+        <property name="connection.username">root</property>
+        <property name="connection.password">Pisos_kok1245</property>
+        <property name="connection.pool_size">1</property>
+        <property name="current_session_context_class">thread</property>
+        <property name="show_sql">true</property>
+        <property name="dialect">org.hibernate.dialect.MySQLDialect</property>
+
+        <mapping resource="Task.hbm.xml"/>
+        <mapping resource="User.hbm.xml"/>
+    </session-factory>
+</hibernate-configuration>

@@ -1,0 +1,15 @@
+<hibernate-mapping xmlns="http://www.hibernate.org/xsd/hibernate-mapping">
+    <class name="com.petproject.entity.User" table="users">
+        <id column="id" name="userId" type="java.lang.Long">
+            <generator class="increment"></generator>
+        </id>
+        <property column="login" name="login" type="java.lang.String"/>
+        <property column="firstname" name="firstName" type="java.lang.String"/>
+        <property column="lastname" name="lastName" type="java.lang.String"/>
+        <property column="userpoints" name="userPoints" type="java.lang.Integer"/>
+        <set name="tasks" lazy="false">
+            <key column="id"/>
+            <one-to-many class="com.petproject.entity.Task"/>
+        </set>
+    </class>
+</hibernate-mapping>
