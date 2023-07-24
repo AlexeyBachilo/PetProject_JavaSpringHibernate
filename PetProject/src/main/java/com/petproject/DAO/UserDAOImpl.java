@@ -2,22 +2,19 @@ package com.petproject.DAO;
 
 import com.petproject.entity.Task;
 import com.petproject.entity.User;
-import com.petproject.util.HibernateUtil;
-import org.hibernate.Query;
+import com.petproject.util.HibernateSessionFactoryUtil;
 import org.hibernate.Session;
 
 import javax.swing.*;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
-import javax.xml.*;
 
 public class UserDAOImpl implements UserDAO{
     public void addUser(User user) throws SQLException{
         Session session = null;
         try {
-            session = HibernateUtil.getSessionFactory().openSession();
+            session = HibernateSessionFactoryUtil.getSessionFactory().openSession();
             session.beginTransaction();
             session.save(user);
             session.getTransaction().commit();
@@ -33,7 +30,7 @@ public class UserDAOImpl implements UserDAO{
     public void updateUser (Long userId, User user) throws SQLException {
         Session session = null;
         try {
-            session = HibernateUtil.getSessionFactory().openSession();
+            session = HibernateSessionFactoryUtil.getSessionFactory().openSession();
             session.beginTransaction();
             session.update(user);
             session.getTransaction().commit();
@@ -50,8 +47,10 @@ public class UserDAOImpl implements UserDAO{
         Session session = null;
         User user = null;
         try{
-            session = HibernateUtil.getSessionFactory().openSession();
+            session = HibernateSessionFactoryUtil.getSessionFactory().openSession();
+            session.beginTransaction();
             user = (User) session.load(User.class, userId);
+            session.getTransaction().commit();
         } catch (Exception e){
             JOptionPane.showMessageDialog(null, e.getMessage(), "FindById Error", JOptionPane.OK_OPTION);
         } finally {
@@ -62,14 +61,16 @@ public class UserDAOImpl implements UserDAO{
         return  user;
     }
 
-    public Collection getAllUsers() throws SQLException {
+    public List<User> getAllUsers() throws SQLException {
         Session session = null;
         List users = new ArrayList<User>();
         try{
-            session = HibernateUtil.getSessionFactory().openSession();
+            session = HibernateSessionFactoryUtil.getSessionFactory().openSession();
+            session.beginTransaction();
             users = session.createCriteria(User.class).list();
+            session.getTransaction().commit();
         } catch (Exception e){
-            JOptionPane.showMessageDialog(null, e.getMessage(), "getAll Error", JOptionPane.OK_OPTION);
+            JOptionPane.showMessageDialog(null, e.getMessage(), "getAllUsers Error", JOptionPane.OK_OPTION);
         } finally {
             if(session != null && session.isOpen()){
                 session.close();
@@ -81,7 +82,7 @@ public class UserDAOImpl implements UserDAO{
     public void deleteUser(User user) throws SQLException {
         Session session = null;
         try {
-            session = HibernateUtil.getSessionFactory().openSession();
+            session = HibernateSessionFactoryUtil.getSessionFactory().openSession();
             session.getTransaction();
             session.delete(user);
             session.getTransaction().commit();
@@ -98,14 +99,11 @@ public class UserDAOImpl implements UserDAO{
         Session session = null;
         User user = null;
         try{
-            session = HibernateUtil.getSessionFactory().openSession();
+            session = HibernateSessionFactoryUtil.getSessionFactory().openSession();
             session.beginTransaction();
-            Long userId = task.getUserId();
-            Query query = session.createQuery(
-                    "from User "
-                    +"where id = :userId "
-            ).setLong("userId", userId);
-            user = (User)query.uniqueResult();
+
+            user = task.getUser();
+            session.getTransaction().commit();
         } catch (Exception e){
             JOptionPane.showMessageDialog(null, e.getMessage(), "getUserByTask Error", JOptionPane.OK_OPTION);
         } finally {

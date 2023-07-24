@@ -1,23 +1,32 @@
 package com.petproject.entity;
 
-import org.hibernate.annotations.*;
-import org.springframework.scheduling.config.Task;
+import org.hibernate.annotations.Proxy;
+
+import javax.persistence.*;
 import javax.persistence.Id;
+import java.io.Serializable;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 
-
-public class User {
+@Entity
+@Table(name = "users")
+@Proxy(lazy = false)
+public class User implements Serializable {
     private Long userId;
     private String login;
     private String firstName;
     private String lastName;
     private int userPoints;
-    private Set tasks = new HashSet();
+    private List<Task> tasks;
 
     public User(){}
 
+    @Id
+    @SequenceGenerator(name = "user_seq", sequenceName = "user_user_id_seq", allocationSize = 0)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "user_seq")
+    @Column(name = "userid", unique = true, nullable = false)
     public Long getUserId() {
         return userId;
     }
@@ -26,6 +35,7 @@ public class User {
         this.userId = userId;
     }
 
+    @Column(name = "login")
     public String getLogin() {
         return login;
     }
@@ -34,6 +44,7 @@ public class User {
         this.login = login;
     }
 
+    @Column(name = "firstname")
     public String getFirstName() {
         return firstName;
     }
@@ -42,6 +53,7 @@ public class User {
         this.firstName = firstname;
     }
 
+    @Column(name = "lastname")
     public String getLastName() {
         return lastName;
     }
@@ -50,6 +62,7 @@ public class User {
         this.lastName = lastname;
     }
 
+    @Column(name = "userpoints")
     public int getUserPoints() {
         return userPoints;
     }
@@ -58,11 +71,12 @@ public class User {
         this.userPoints = userpoints;
     }
 
-    public Set getTasks() {
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "user", cascade = CascadeType.ALL)
+    public List<Task> getTasks() {
         return tasks;
     }
 
-    public void setTasks(Set tasks) {
+    public void setTasks(List<Task> tasks) {
         this.tasks = tasks;
     }
 
