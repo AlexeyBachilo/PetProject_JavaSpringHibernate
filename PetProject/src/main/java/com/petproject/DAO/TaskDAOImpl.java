@@ -111,6 +111,7 @@ public class TaskDAOImpl implements TaskDAO{
             criteria.add(Restrictions.eq("user",user));
             tasks = criteria.list();
             user.setTasks(tasks);
+            user.getTasks();
             session.getTransaction().commit();
         } catch (Exception ex){
             JOptionPane.showMessageDialog(null, ex.getMessage(), "getTasksByUser Error", JOptionPane.OK_OPTION);

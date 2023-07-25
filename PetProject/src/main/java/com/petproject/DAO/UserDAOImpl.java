@@ -44,13 +44,14 @@ public class UserDAOImpl implements UserDAO{
         }
     }
 
+    @Transactional
     public User getUserById (Long userId){
         Session session = null;
         User user = null;
         try{
             session = HibernateSessionFactoryUtil.getSessionFactory().openSession();
             session.beginTransaction();
-            user = (User) session.load(User.class, userId);
+            user = session.load(User.class, userId);
             session.getTransaction().commit();
         } catch (Exception e){
             JOptionPane.showMessageDialog(null, e.getMessage(), "FindById Error", JOptionPane.OK_OPTION);

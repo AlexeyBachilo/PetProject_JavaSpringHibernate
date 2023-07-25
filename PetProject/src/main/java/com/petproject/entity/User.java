@@ -1,6 +1,7 @@
 package com.petproject.entity;
 
 
+import com.petproject.service.TaskService;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.*;
@@ -70,10 +71,16 @@ public class User implements Serializable {
         this.userPoints = userpoints;
     }
 
+    @Transactional
     public List<Task> getTasks() {
+        if(tasks.isEmpty()){
+            TaskService taskService = new TaskService();
+            tasks = taskService.getTasksByUser(this);
+        }
         return tasks;
     }
 
+    @Transactional
     public void setTasks(List<Task> tasks) {
         this.tasks = tasks;
     }
