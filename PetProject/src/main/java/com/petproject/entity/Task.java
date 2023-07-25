@@ -1,6 +1,7 @@
 package com.petproject.entity;
 
-import org.hibernate.annotations.Proxy;
+
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -9,22 +10,28 @@ import java.util.Objects;
 
 @Entity
 @Table(name = "tasks")
-@Proxy(lazy = false)
 public class Task implements Serializable {
-    private Long taskId;
-    private String taskName;
-    private String taskDescription;
-    private boolean isCompleted;
-    private int taskPoints;
-    private Date deadline;
-    private User user;
-
-    public Task(){}
-
     @Id
     @SequenceGenerator(name = "task_seq", sequenceName = "task_task_id_seq", allocationSize = 0)
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "task_seq")
     @Column(name = "taskid")
+    private Long taskId;
+    @Column(name = "taskname")
+    private String taskName;
+    @Column(name = "taskdescription")
+    private String taskDescription;
+    @Column(name = "complete")
+    private boolean isCompleted;
+    @Column(name = "taskpoints")
+    private int taskPoints;
+    @Column(name = "deadline")
+    private Date deadline;
+    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @JoinColumn(name = "assigneduserid")
+    private User user;
+
+    public Task(){}
+
     public Long getTaskId() {
         return taskId;
     }
@@ -33,7 +40,6 @@ public class Task implements Serializable {
         this.taskId = taskId;
     }
 
-    @Column(name = "taskname")
     public String getTaskName() {
         return taskName;
     }
@@ -42,7 +48,6 @@ public class Task implements Serializable {
         this.taskName = taskName;
     }
 
-    @Column(name = "taskdescription")
     public String getTaskDescription() {
         return taskDescription;
     }
@@ -51,8 +56,6 @@ public class Task implements Serializable {
         this.taskDescription = taskDescription;
     }
 
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JoinColumn(name = "assigneduserid")
     public User getUser() {
         return user;
     }
@@ -61,7 +64,6 @@ public class Task implements Serializable {
         this.user = user;
     }
 
-    @Column(name = "complete")
     public boolean getisCompleted() {
         return isCompleted;
     }
@@ -70,7 +72,6 @@ public class Task implements Serializable {
         isCompleted = completed;
     }
 
-    @Column(name = "taskpoints")
     public int getTaskPoints() {
         return taskPoints;
     }
@@ -79,7 +80,6 @@ public class Task implements Serializable {
         this.taskPoints = taskPoints;
     }
 
-    @Column(name = "deadline")
     public Date getDeadline() {
         return deadline;
     }

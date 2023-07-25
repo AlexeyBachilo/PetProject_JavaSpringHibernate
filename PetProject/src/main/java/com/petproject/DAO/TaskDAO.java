@@ -2,15 +2,16 @@ package com.petproject.DAO;
 
 import com.petproject.entity.Task;
 import com.petproject.entity.User;
+import org.springframework.transaction.annotation.Transactional;
 
-import java.sql.SQLException;
-import java.util.Collection;
+import java.util.List;
 
 public interface TaskDAO {
-    public void addTask (Task task) throws SQLException;
-    public void updateTask (Long taskId, Task task) throws SQLException;
-    public Task getTaskById (Long taskId) throws SQLException;
-    public Collection getAllTasks() throws SQLException;
-    public void deleteTask (Task task) throws SQLException;
-    public Collection getTasksByUser (User user) throws SQLException;
+    void addTask (Task task);
+    void updateTask (Long taskId, Task task);
+    Task getTaskById (Long taskId);
+    List<Task> getAllTasks();
+    void deleteTask (Task task);
+    @Transactional
+    List<Task> getTasksByUser (User user);
 }

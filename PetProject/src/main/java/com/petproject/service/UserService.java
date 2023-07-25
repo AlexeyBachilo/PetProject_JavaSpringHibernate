@@ -4,27 +4,49 @@ import com.petproject.DAO.UserDAOImpl;
 import com.petproject.entity.Task;
 import com.petproject.entity.User;
 
-import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
-import java.sql.SQLException;
 import java.util.List;
 
-public class UserService{
+public class UserService {
     private UserDAOImpl userDAO = new UserDAOImpl();
 
-    public UserService(){}
+    public UserService() {
+    }
 
-    public void addUser(User user) throws SQLException {userDAO.addUser(user);}
+    public void addUser(User user) {
+        userDAO.addUser(user);
+    }
 
-    public void updateUser(User user) throws SQLException {userDAO.updateUser(user.getUserId(), user);}
+    public void updateUser(User user) {
+        userDAO.updateUser(user.getUserId(), user);
+    }
 
-    public void deleteUser(User user) throws SQLException {userDAO.deleteUser(user);}
+    public void deleteUser(User user) {
+        userDAO.deleteUser(user);
+    }
 
-    public User getUserById (Long id) throws SQLException {return userDAO.getUserById(id);}
+    public User getUserById(Long id) {
+        return userDAO.getUserById(id);
+    }
 
     @Transactional
-    public User getUserByTask (Task task) throws SQLException {return userDAO.getUserByTask(task);}
+    public User getUserByTask(Task task) {
+        return userDAO.getUserByTask(task);
+    }
 
-    public List<User> getAllUsers () throws SQLException {return userDAO.getAllUsers();}
+    public List<User> getAllUsers() {
+        return userDAO.getAllUsers();
+    }
 
+    public void addTask(Task task) {
+        userDAO.addTask(task);
+    }
+
+    public void deleteTask(Task task) {
+        userDAO.deleteTask(task);
+    }
+
+    public void updateTask(Task task) {
+        userDAO.updateTask(task);
+    }
 }

@@ -5,7 +5,6 @@ import com.petproject.entity.User;
 import org.hibernate.SessionFactory;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.cfg.Configuration;
-import javax.xml.*;
 
 public class HibernateSessionFactoryUtil {
     private static SessionFactory sessionFactory;

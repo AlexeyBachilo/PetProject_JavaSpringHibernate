@@ -1,32 +1,35 @@
 package com.petproject.entity;
 
-import org.hibernate.annotations.Proxy;
+
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.*;
 import javax.persistence.Id;
 import java.io.Serializable;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
-import java.util.Set;
 
 @Entity
 @Table(name = "users")
-@Proxy(lazy = false)
 public class User implements Serializable {
-    private Long userId;
-    private String login;
-    private String firstName;
-    private String lastName;
-    private int userPoints;
-    private List<Task> tasks;
-
-    public User(){}
-
     @Id
     @SequenceGenerator(name = "user_seq", sequenceName = "user_user_id_seq", allocationSize = 0)
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "user_seq")
     @Column(name = "userid", unique = true, nullable = false)
+    private Long userId;
+    @Column(name = "login")
+    private String login;
+    @Column(name = "firstname")
+    private String firstName;
+    @Column(name = "lastname")
+    private String lastName;
+    @Column(name = "userpoints")
+    private int userPoints;
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    private List<Task> tasks;
+
+    public User(){}
+
     public Long getUserId() {
         return userId;
     }
@@ -35,7 +38,6 @@ public class User implements Serializable {
         this.userId = userId;
     }
 
-    @Column(name = "login")
     public String getLogin() {
         return login;
     }
@@ -44,7 +46,6 @@ public class User implements Serializable {
         this.login = login;
     }
 
-    @Column(name = "firstname")
     public String getFirstName() {
         return firstName;
     }
@@ -53,7 +54,6 @@ public class User implements Serializable {
         this.firstName = firstname;
     }
 
-    @Column(name = "lastname")
     public String getLastName() {
         return lastName;
     }
@@ -62,7 +62,6 @@ public class User implements Serializable {
         this.lastName = lastname;
     }
 
-    @Column(name = "userpoints")
     public int getUserPoints() {
         return userPoints;
     }
@@ -71,7 +70,6 @@ public class User implements Serializable {
         this.userPoints = userpoints;
     }
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "user", cascade = CascadeType.ALL)
     public List<Task> getTasks() {
         return tasks;
     }
