@@ -4,12 +4,18 @@ import com.petproject.entity.Task;
 import com.petproject.entity.User;
 import com.petproject.service.TaskService;
 import com.petproject.service.UserService;
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.annotation.PropertySource;
 
 import java.util.Iterator;
 import java.util.List;
 
+//@SpringBootApplication
+//@PropertySource("classpath:database.properties")
 public class Main {
     public static void main(String[] args) {
+        //SpringApplication.run(Main.class, args);
         UserService userService = new UserService();
         TaskService taskService = new TaskService();
         List<Task> tasks = taskService.getAllTasks();
@@ -42,3 +48,7 @@ public class Main {
         }
     }
 }
+
+//TODO Unit-tests
+//TODO Remove login/password from hibernate.cfg.xml to some .properties file
+//TODO Add .properties file to .gitignore
