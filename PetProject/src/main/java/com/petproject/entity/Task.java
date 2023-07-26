@@ -5,6 +5,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.Objects;
 
@@ -25,7 +26,7 @@ public class Task implements Serializable {
     @Column(name = "taskpoints")
     private int taskPoints;
     @Column(name = "deadline")
-    private Date deadline;
+    private LocalDate deadline;
     @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinColumn(name = "assigneduserid")
     private User user;
@@ -80,11 +81,11 @@ public class Task implements Serializable {
         this.taskPoints = taskPoints;
     }
 
-    public Date getDeadline() {
+    public LocalDate getDeadline() {
         return deadline;
     }
 
-    public void setDeadline(Date deadline) {
+    public void setDeadline(LocalDate deadline) {
         this.deadline = deadline;
     }
 

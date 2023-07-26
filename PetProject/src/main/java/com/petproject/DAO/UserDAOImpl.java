@@ -4,8 +4,10 @@ import com.petproject.entity.Task;
 import com.petproject.entity.User;
 import com.petproject.service.TaskService;
 import jakarta.annotation.Resource;
+import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.criterion.Restrictions;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -55,6 +57,20 @@ public class UserDAOImpl implements UserDAO{
             user = session.load(User.class, userId);
         } catch (Exception e){
             JOptionPane.showMessageDialog(null, e.getMessage(), "FindById Error", JOptionPane.OK_OPTION);
+        }
+        return  user;
+    }
+
+    public User getUserByLogin(String login) {
+        User user = null;
+        try{
+            Session session = sessionFactory.getCurrentSession();
+            session.beginTransaction();
+            Criteria criteria = session.createCriteria(User.class);
+            criteria.add(Restrictions.eq("login", login));
+            user = (User) criteria.uniqueResult();
+        } catch (Exception e){
+            JOptionPane.showMessageDialog(null, e.getMessage(), "FindByLogin Error", JOptionPane.OK_OPTION);
         }
         return  user;
     }
