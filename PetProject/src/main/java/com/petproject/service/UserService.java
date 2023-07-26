@@ -4,13 +4,25 @@ import com.petproject.DAO.UserDAOImpl;
 import com.petproject.entity.Task;
 import com.petproject.entity.User;
 
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
+@Service("userService")
+@Transactional(propagation = Propagation.REQUIRES_NEW)
 public class UserService {
-    private UserDAOImpl userDAO = new UserDAOImpl();
+    private UserDAOImpl userDAO;
 
     public UserService() {
+    }
+
+    public UserDAOImpl getUserDAO() {
+        return userDAO;
+    }
+
+    public void setUserDAO(UserDAOImpl userDAO) {
+        this.userDAO = userDAO;
     }
 
     public void addUser(User user) {
@@ -29,7 +41,6 @@ public class UserService {
         return userDAO.getUserById(id);
     }
 
-    @Transactional
     public User getUserByTask(Task task) {
         return userDAO.getUserByTask(task);
     }
@@ -38,15 +49,12 @@ public class UserService {
         return userDAO.getAllUsers();
     }
 
-    public void addTask(Task task) {
-        userDAO.addTask(task);
-    }
-
-    public void deleteTask(Task task) {
-        userDAO.deleteTask(task);
-    }
-
-    public void updateTask(Task task) {
-        userDAO.updateTask(task);
+    public void completeTask(Task task){
+        TaskService taskService = new TaskService();
+        task.setisCompleted(!task.getisCompleted());
+        User user = getUserByTask(task);
+        user.setUserPoints(task.getisCompleted() ? user.getUserPoints() + task.getTaskPoints() : user.getUserPoints() - task.getTaskPoints());
+        taskService.updateTask(task);
+        updateUser(user);
     }
 }

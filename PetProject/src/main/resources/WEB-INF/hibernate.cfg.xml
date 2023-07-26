@@ -1,0 +1,17 @@
+<hibernate-configuration xmlns="http://www.hibernate.org/xsd/orm/cfg">
+    <session-factory>
+<!--        <property name="connection.url">jdbc:mysql://localhost/userDB</property>
+        <property name="connection.username">root</property>
+        <property name="connection.password">Pisos_kok1245</property>-->
+<!--        <property name="connection.User_class">com.petproject.entity.User</property>
+        <property name="current_session_context_class">thread</property>-->
+        <property name="show_sql">true</property>
+        <property name="dialect">org.hibernate.dialect.MySQLDialect</property>
+        <property name="hbm2ddl.auto">update</property>
+<!--        <property name="hibernate.connection.provider.class">org.hibernate.hikaricp.internal.HikariCPConnectionProvider</property>
+        <property name="hibernate.hikari.connectionTimeout">10000</property>
+        <property name="hibernate.hikari.minimumIdle">1</property>
+        <property name="hibernate.hikari.maximumPoolSize">5</property>
+        <property name="hibernate.hikari.idleTimeout">200000</property>-->
+    </session-factory>
+</hibernate-configuration>

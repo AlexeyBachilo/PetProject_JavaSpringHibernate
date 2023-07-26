@@ -71,7 +71,6 @@ public class User implements Serializable {
         this.userPoints = userpoints;
     }
 
-    @Transactional
     public List<Task> getTasks() {
         if(tasks.isEmpty()){
             TaskService taskService = new TaskService();
@@ -80,7 +79,6 @@ public class User implements Serializable {
         return tasks;
     }
 
-    @Transactional
     public void setTasks(List<Task> tasks) {
         this.tasks = tasks;
     }

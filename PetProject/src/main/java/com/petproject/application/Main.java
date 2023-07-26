@@ -4,20 +4,30 @@ import com.petproject.entity.Task;
 import com.petproject.entity.User;
 import com.petproject.service.TaskService;
 import com.petproject.service.UserService;
-import org.springframework.boot.SpringApplication;
+import jakarta.annotation.Resource;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.PropertySource;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
 
+import java.io.IOException;
 import java.util.Iterator;
 import java.util.List;
 
-//@SpringBootApplication
-//@PropertySource("classpath:database.properties")
+@SpringBootApplication
+@PropertySource("classpath:spring.properties")
 public class Main {
-    public static void main(String[] args) {
-        //SpringApplication.run(Main.class, args);
-        UserService userService = new UserService();
-        TaskService taskService = new TaskService();
+
+
+    @Resource(name="userService")
+    static UserService userService;
+    @Resource(name="taskService")
+    static TaskService taskService;
+
+    public static void main(String[] args) throws IOException {
+        ApplicationContext applicationContext = new ClassPathXmlApplicationContext("beanLocations.xml");
+        UserService userService = (UserService) applicationContext.getBean("userService");
+        TaskService taskService = (TaskService) applicationContext.getBean("taskService");
         List<Task> tasks = taskService.getAllTasks();
         Iterator iterator = tasks.iterator();
         System.out.println("=====All Tasks=====");
@@ -47,8 +57,8 @@ public class Main {
             System.out.println("-------------");
         }
     }
+    
 }
 
 //TODO Unit-tests
-//TODO Remove login/password from hibernate.cfg.xml to some .properties file
 //TODO Add .properties file to .gitignore

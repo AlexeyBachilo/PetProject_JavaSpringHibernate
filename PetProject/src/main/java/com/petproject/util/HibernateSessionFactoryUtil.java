@@ -2,16 +2,16 @@ package com.petproject.util;
 
 import com.petproject.entity.Task;
 import com.petproject.entity.User;
+import jakarta.annotation.Resource;
 import org.hibernate.SessionFactory;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.cfg.Configuration;
 
 public class HibernateSessionFactoryUtil {
+    @Resource(name = "sessionFactory")
     private static SessionFactory sessionFactory;
 
-    private HibernateSessionFactoryUtil () {}
-
-    public static SessionFactory getSessionFactory(){
+    private HibernateSessionFactoryUtil () {
         try{
             if (sessionFactory == null){
                 Configuration configuration = new Configuration().configure();
@@ -24,6 +24,5 @@ public class HibernateSessionFactoryUtil {
             System.err.println("Initial Session Factory creation failed." + ex);
             throw new ExceptionInInitializerError(ex);
         }
-        return sessionFactory;
     }
 }
