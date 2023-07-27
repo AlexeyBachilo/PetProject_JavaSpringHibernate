@@ -2,12 +2,14 @@ package com.petproject.DAO;
 
 import com.petproject.entity.Task;
 import com.petproject.entity.User;
-import com.petproject.service.TaskService;
+
 import jakarta.annotation.Resource;
 import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Restrictions;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -15,11 +17,15 @@ import javax.swing.*;
 import java.util.ArrayList;
 import java.util.List;
 
+@Repository
 @Transactional(propagation = Propagation.REQUIRES_NEW)
 public class UserDAOImpl implements UserDAO{
-
+    @Autowired
     @Resource(name = "sessionFactory")
     private SessionFactory sessionFactory;
+
+    public UserDAOImpl() {
+    }
 
     public SessionFactory getSessionFactory() {
         return sessionFactory;

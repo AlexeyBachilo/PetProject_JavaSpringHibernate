@@ -16,7 +16,7 @@ import java.util.Objects;
 public class User implements Serializable {
     @Id
     @SequenceGenerator(name = "user_seq", sequenceName = "user_user_id_seq", allocationSize = 0)
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "user_seq")
+    @GeneratedValue(strategy = GenerationType.IDENTITY, generator = "user_seq")
     @Column(name = "userid", unique = true, nullable = false)
     private Long userId;
     @Column(name = "login")
@@ -26,9 +26,9 @@ public class User implements Serializable {
     @Column(name = "lastname")
     private String lastName;
     @Column(name = "userpoints")
-    private int userPoints;
+    private int userPoints = 0;
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
-    private List<Task> tasks;
+    private List<Task> tasks = null;
 
     public User(){}
 

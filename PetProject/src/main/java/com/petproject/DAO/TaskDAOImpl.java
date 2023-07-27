@@ -7,6 +7,10 @@ import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Restrictions;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
+import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -14,11 +18,15 @@ import javax.swing.*;
 import java.util.ArrayList;
 import java.util.List;
 
+@Repository
 @Transactional(propagation = Propagation.REQUIRES_NEW)
 public class TaskDAOImpl implements TaskDAO{
-
+    @Autowired
     @Resource(name = "sessionFactory")
     private SessionFactory sessionFactory;
+
+    public TaskDAOImpl() {
+    }
 
     public SessionFactory getSessionFactory() {
         return sessionFactory;

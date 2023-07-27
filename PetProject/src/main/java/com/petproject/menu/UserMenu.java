@@ -5,6 +5,9 @@ import com.petproject.entity.User;
 import com.petproject.service.TaskService;
 import com.petproject.service.UserService;
 import jakarta.annotation.Resource;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.annotation.ComponentScan;
 
 import java.io.IOException;
 import java.util.Iterator;
@@ -12,28 +15,41 @@ import java.util.List;
 import java.util.Scanner;
 
 import static com.petproject.menu.MainMenu.mainMenu;
+import static com.petproject.menu.TaskMenu.selectTask;
+import static com.petproject.menu.TaskMenu.updateTask;
 
+@ComponentScan
 public class UserMenu{
+    @Autowired
     @Resource(name="userService")
     static UserService userService;
+    @Autowired
+    @Resource(name="taskService")
+    static TaskService taskService;
+    static ApplicationContext context;
 
-    protected static void userMenu() throws IOException {
+
+    protected static void userMenu(/*ApplicationContext ctx*/) throws IOException {
+ /*       context = ctx;
+        userService = (UserService) context.getBean("userService");
+        taskService = (TaskService) context.getBean("taskService");*/
         Scanner scanner = new Scanner(System.in);
         System.out.println("\n=====User Menu=====");
         System.out.println("1. Add user" + "\n2. Update user" + "\n3. Delete user" + "\n4. See All Users\n");
         while (true){
             int choice = scanner.nextInt();
+            scanner.nextLine();
             switch (choice){
                 case 1:{
                     User user = new User();
-                    System.out.println("Enter Login: ");
-                    String newlogin = scanner.nextLine();
-                    System.out.println("Enter First Name: ");
+                    System.out.println("Enter Login: \n");
+                    String newLogin = scanner.nextLine();
+                    System.out.println("Enter First Name: \n");
                     String newFirstName = scanner.nextLine();
-                    System.out.println("Enter Last Name: ");
+                    System.out.println("Enter Last Name: \n");
                     String newLastName = scanner.nextLine();
                     try {
-                        user.setLogin(newlogin);
+                        user.setLogin(newLogin);
                         user.setFirstName(newFirstName);
                         user.setLastName(newLastName);
                         userService.addUser(user);
@@ -41,13 +57,14 @@ public class UserMenu{
                     }catch (Exception e){
                         System.out.println("Failed to create a user!");
                     } finally {
-                        mainMenu();
+                        mainMenu(/*context*/);
+                        scanner.close();
                     }
                     break;
                 }
                 case 2:{
                     User user = selectUser();
-                    userService.printUser(user);
+                    userService.printUser(user,true);
                     System.out.println("=====Update User=====");
                     System.out.println("1. Update Login" + "\n2. Update First Name" + "\n3. Update Last Name" + "\n4. Update Tasks");
                     while (true){
@@ -63,7 +80,7 @@ public class UserMenu{
                                 }catch (Exception e){
                                     System.out.println("Failed to update the user!");
                                 } finally {
-                                    mainMenu();
+                                    mainMenu(/*context*/);
                                     break;
                                 }
                             }
@@ -77,7 +94,7 @@ public class UserMenu{
                                 }catch (Exception e){
                                     System.out.println("Failed to update the user!");
                                 }finally {
-                                    mainMenu();
+                                    mainMenu(/*context*/);
                                     break;
                                 }
                             }
@@ -91,12 +108,19 @@ public class UserMenu{
                                 }catch (Exception e){
                                     System.out.println("Failed to update the user!");
                                 } finally {
-                                    mainMenu();
+                                    mainMenu(/*context*/);
                                     break;
                                 }
                             }
                             case 4:{
-
+                                List<Task> userTasks = taskService.getTasksByUser(user);
+                                Iterator iterator = userTasks.iterator();
+                                while(iterator.hasNext()){
+                                    Task task = (Task) iterator.next();
+                                    taskService.printTask(task);
+                                }
+                                Task selectedTask = selectTask();
+                                updateTask(selectedTask);
                             }
                             default:{
                                 System.out.println("There's no such option. Try again!");
@@ -107,38 +131,28 @@ public class UserMenu{
                 }
                 case 3:{
                     User user = selectUser();
-                    userService.printUser(user);
+                    userService.printUser(user,false);
                     try{
                         userService.deleteUser(user);
                         System.out.println("User successfully deleted!");
                     } catch (Exception e){
                         System.out.println("Failed to delete the user!");
                     } finally {
-                        mainMenu();
+                        mainMenu(/*context*/);
                     }
                     break;
                 }
                 case 4:{
-                    TaskService taskService = new TaskService();
                     List<User> users = userService.getAllUsers();
                     Iterator iterator = users.iterator();
                     System.out.println("\n=====All Users=====");
                     while(iterator.hasNext()){
                         User user = (User) iterator.next();
-                        System.out.println("User Login: " + user.getLogin() + "\nFirst Name: " + user.getFirstName()
-                                +"\nLast Name: " + user.getLastName() + "\nCurrent Points: " + user.getUserPoints());
-                        List<Task> usertasks = taskService.getTasksByUser(user);
-                        Iterator iterator2 = usertasks.iterator();
-                        System.out.println("Current Tasks: ");
-                        while(iterator2.hasNext()) {
-                            Task task = (Task) iterator2.next();
-                            System.out.println("      Task Name: " + task.getTaskName() + " | Task Description: " + task.getTaskDescription()
-                                    +" | Is Completed: " + ((task.getisCompleted()) ? "Yes" : "No") + " | Deadline: " + task.getDeadline());
-                        }
+                        userService.printUser(user,true);
                         System.out.println("-------------");
-                        mainMenu();
-                        break;
                     }
+                    mainMenu(/*context*/);
+                    break;
                 }
                 default:{
                     System.out.println("There's no such option. Try again!\n");
@@ -166,6 +180,7 @@ public class UserMenu{
                             System.out.println("No such user!");
                             continue;
                         }
+                        scanner.close();
                         return newUser;
                     }
                 }

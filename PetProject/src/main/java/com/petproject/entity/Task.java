@@ -14,7 +14,7 @@ import java.util.Objects;
 public class Task implements Serializable {
     @Id
     @SequenceGenerator(name = "task_seq", sequenceName = "task_task_id_seq", allocationSize = 0)
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "task_seq")
+    @GeneratedValue(strategy = GenerationType.IDENTITY, generator = "task_seq")
     @Column(name = "taskid")
     private Long taskId;
     @Column(name = "taskname")
@@ -24,12 +24,12 @@ public class Task implements Serializable {
     @Column(name = "complete")
     private boolean isCompleted;
     @Column(name = "taskpoints")
-    private int taskPoints;
+    private int taskPoints = 0;
     @Column(name = "deadline")
-    private LocalDate deadline;
+    private Date deadline;
     @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinColumn(name = "assigneduserid")
-    private User user;
+    private User user = null;
 
     public Task(){}
 
@@ -81,11 +81,11 @@ public class Task implements Serializable {
         this.taskPoints = taskPoints;
     }
 
-    public LocalDate getDeadline() {
+    public Date getDeadline() {
         return deadline;
     }
 
-    public void setDeadline(LocalDate deadline) {
+    public void setDeadline(Date deadline) {
         this.deadline = deadline;
     }
 

@@ -4,9 +4,12 @@ import com.petproject.entity.Task;
 import com.petproject.entity.User;
 import com.petproject.service.TaskService;
 import com.petproject.service.UserService;
+import jakarta.annotation.Resource;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.annotation.ComponentScan;
 
 import java.io.IOException;
-import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.Iterator;
@@ -16,11 +19,21 @@ import java.util.Scanner;
 import static com.petproject.menu.MainMenu.mainMenu;
 import static com.petproject.menu.UserMenu.selectUser;
 
+@ComponentScan
 public class TaskMenu {
-    protected static void taskMenu() throws IOException {
+    @Autowired
+    @Resource(name="userService")
+    static UserService userService;
+    @Autowired
+    @Resource(name="taskService")
+    static TaskService taskService;
+    static ApplicationContext context;
+
+    protected static void taskMenu(/*ApplicationContext ctx*/) throws IOException {
+/*        context = ctx;
+        userService = (UserService) context.getBean("userService");
+        taskService = (TaskService) context.getBean("taskService");*/
         Scanner scanner = new Scanner(System.in);
-        UserService userService = new UserService();
-        TaskService taskService = new TaskService();
         System.out.println("\n=====Task Menu=====");
         System.out.println("1. Add Task" + "\n2. Update Task" + "\n3. Delete Task" + "\n4. See All Tasks\n");
         while (true){
@@ -35,21 +48,24 @@ public class TaskMenu {
                     String newTaskDescription = scanner.nextLine();
                     System.out.println("Enter Deadline [Format: YYYY-MM-DD HH:MM:SS]: ");
                     DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH-mm-ss");
-                    LocalDate newDeadline = LocalDate.parse(scanner.nextLine(),formatter);
+                    String newDL = scanner.nextLine();
+                    Date newDeadline = (Date) formatter.parse(newDL);
                     System.out.println("Enter Task Points: ");
                     int newTaskPoints = scanner.nextInt();
+                    User newUser = selectUser();
                     try {
                         task.setTaskName(newTaskName);
                         task.setTaskDescription(newTaskDescription);
                         task.setDeadline(newDeadline);
                         task.setUser(user);
                         task.setTaskPoints(newTaskPoints);
+                        task.setUser(newUser);
                         taskService.addTask(task);
                         System.out.println("Task added successfully!");
                     }catch (Exception e){
                         System.out.println("Failed to create a task!");
                     } finally {
-                        mainMenu();
+                        mainMenu(/*context*/);
                         break;
                     }
                 }
@@ -60,12 +76,13 @@ public class TaskMenu {
                 }
                 case 3:{
                     try{
-                        userService.deleteUser(user);
-                        System.out.println("User successfully deleted!");
+                        Task task = selectTask();
+                        taskService.deleteTask(task);
+                        System.out.println("Task successfully deleted!");
                     } catch (Exception e){
-                        System.out.println("Failed to delete the user!");
+                        System.out.println("Failed to delete the task!");
                     } finally {
-                        mainMenu();
+                        mainMenu(/*context*/);
                     }
                     break;
                 }
@@ -77,7 +94,7 @@ public class TaskMenu {
                         Task task = (Task) iterator.next();
                         taskService.printTask(task);
                     }
-                    mainMenu();
+                    mainMenu(/*context*/);
                     break;
                 }
                 default:{
@@ -88,9 +105,8 @@ public class TaskMenu {
         }
     }
 
-    private static void updateTask(Task task) throws IOException {
+    protected static void updateTask(Task task) throws IOException {
         Scanner scanner = new Scanner(System.in);
-        TaskService taskService = new TaskService();
         System.out.println("=====Update Task=====");
         System.out.println("1. Update Task Name" + "\n2. Update Task Description" + "\n3. Update Deadline"
                 + "\n4. Update Task Points" + "\n5. Update Assigned User" + "\n6. Update Completion\n");
@@ -107,7 +123,7 @@ public class TaskMenu {
                     }catch (Exception e){
                         System.out.println("Failed to update the task!");
                     } finally {
-                        mainMenu();
+                        mainMenu(/*context*/);
                         break;
                     }
                 }
@@ -121,7 +137,7 @@ public class TaskMenu {
                     }catch (Exception e){
                         System.out.println("Failed to update the task!");
                     }finally {
-                        mainMenu();
+                        mainMenu(/*context*/);
                         break;
                     }
                 }
@@ -129,14 +145,14 @@ public class TaskMenu {
                     System.out.println("Old Deadline: " + task.getDeadline().toString());
                     System.out.println("New Deadline [Format: YYYY-MM-DD HH:MM:SS]: ");
                     DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH-mm-ss");
-                    LocalDate newDeadline = LocalDate.parse(scanner.nextLine(),formatter);
+                    Date newDeadline = (Date) formatter.parse(scanner.nextLine());
                     try {
                         task.setDeadline(newDeadline);
                         taskService.updateTask(task);
                     }catch (Exception e){
                         System.out.println("Failed to update the task!");
                     } finally {
-                        mainMenu();
+                        mainMenu(/*context*/);
                         break;
                     }
                 }
@@ -150,12 +166,60 @@ public class TaskMenu {
                     }catch (Exception e){
                         System.out.println("Failed to update the task!");
                     }finally {
-                        mainMenu();
+                        mainMenu(/*context*/);
                         break;
                     }
                 }
                 case 5:{
-                    System.out.println();
+                    System.out.println("Old Assigned User Login: " + task.getUser().getLogin());
+                    System.out.println("New Assigned User Login: ");
+                    while(true){
+                        String newUserLogin = scanner.nextLine();
+                        User newUser = userService.getUserByLogin(newUserLogin);
+                        if (newUser != null){
+                            task.setUser(newUser);
+                            taskService.updateTask(task);
+                            break;
+                        }
+                        else{
+                            System.out.println("There's no such user. Try again!");
+                            continue;
+                        }
+                    }
+                    break;
+                }
+                case 6:{
+                    boolean completion = task.getisCompleted();
+                    System.out.println("Is task completed: " + (completion ? "Yes" : "No"));
+                    if(!completion){
+                        System.out.println("Mark task as completed? Y/N: ");
+                        String answer = scanner.nextLine();
+                        switch (answer){
+                            case "Y":{
+                                userService.completeTask(task);
+                            }
+                            default: {
+                                mainMenu(/*context*/);
+                                break;
+                            }
+                        }
+                    }
+                    else if (completion){
+                        System.out.println("Mark task as uncompleted? Y/N");
+                        String answer = scanner.nextLine();
+                        switch (answer){
+                            case "Y":{
+                                userService.completeTask(task);
+                            }
+                            default: {
+                                mainMenu(/*context*/);
+                                break;
+                            }
+                        }
+                    }
+                    else{
+                        break;
+                    }
                 }
                 default:{
                     System.out.println("There's no such option. Try again!");
@@ -165,7 +229,7 @@ public class TaskMenu {
         }
     }
 
-    private static Task selectTask(){
+    protected static Task selectTask(){
         Scanner scanner = new Scanner(System.in);
         TaskService taskService = new TaskService();
         Task newTask = null;
