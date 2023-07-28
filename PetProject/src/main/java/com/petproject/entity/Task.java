@@ -27,7 +27,7 @@ public class Task implements Serializable {
     private int taskPoints = 0;
     @Column(name = "deadline")
     private Date deadline;
-    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "assigneduserid")
     private User user = null;
 
@@ -100,5 +100,12 @@ public class Task implements Serializable {
     @Override
     public int hashCode() {
         return Objects.hash(taskId, taskName, taskDescription, user, isCompleted, taskPoints, deadline);
+    }
+
+    @Override
+    public String toString(){
+        return "Task Id: " + getTaskId() + "\nTask Name: " + getTaskName() + "\nTask Description: " + getTaskDescription()
+                +"\nTask Points: " + getTaskPoints() + "\nIs Completed: " + ((getisCompleted()) ? "Yes" : "No")
+                +"\nDeadline: " + getDeadline();
     }
 }

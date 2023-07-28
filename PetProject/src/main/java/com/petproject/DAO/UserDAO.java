@@ -2,10 +2,12 @@ package com.petproject.DAO;
 
 import com.petproject.entity.Task;
 import com.petproject.entity.User;
+import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
+@Repository
 @Transactional
 public interface UserDAO {
     void addUser(User user);

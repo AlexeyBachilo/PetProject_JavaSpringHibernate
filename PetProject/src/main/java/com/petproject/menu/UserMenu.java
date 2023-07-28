@@ -35,12 +35,17 @@ public class UserMenu{
         taskService = (TaskService) context.getBean("taskService");*/
         Scanner scanner = new Scanner(System.in);
         System.out.println("\n=====User Menu=====");
-        System.out.println("1. Add user" + "\n2. Update user" + "\n3. Delete user" + "\n4. See All Users\n");
+        System.out.println("""
+                1. Add user
+                2. Update user
+                3. Delete user
+                4. See All Users
+                """);
         while (true){
             int choice = scanner.nextInt();
             scanner.nextLine();
-            switch (choice){
-                case 1:{
+            switch (choice) {
+                case 1 -> {
                     User user = new User();
                     System.out.println("Enter Login: \n");
                     String newLogin = scanner.nextLine();
@@ -54,109 +59,106 @@ public class UserMenu{
                         user.setLastName(newLastName);
                         userService.addUser(user);
                         System.out.println("User added successfully!");
-                    }catch (Exception e){
+                    } catch (Exception e) {
                         System.out.println("Failed to create a user!");
                     } finally {
                         mainMenu(/*context*/);
                         scanner.close();
                     }
-                    break;
                 }
-                case 2:{
+                case 2 -> {
                     User user = selectUser();
-                    userService.printUser(user,true);
+                    userService.printUser(user, true);
                     System.out.println("=====Update User=====");
-                    System.out.println("1. Update Login" + "\n2. Update First Name" + "\n3. Update Last Name" + "\n4. Update Tasks");
-                    while (true){
+                    System.out.println("""
+                            1. Update Login
+                            2. Update First Name
+                            3. Update Last Name
+                            4. Update Tasks""");
+                    while (true) {
                         choice = scanner.nextInt();
-                        switch (choice){
-                            case 1:{
+                        switch (choice) {
+                            case 1: {
                                 System.out.println("Old Login: " + user.getLogin());
                                 System.out.println("New Login: ");
                                 String newLogin = scanner.nextLine();
                                 try {
                                     user.setLogin(newLogin);
                                     userService.updateUser(user);
-                                }catch (Exception e){
+                                } catch (Exception e) {
                                     System.out.println("Failed to update the user!");
                                 } finally {
                                     mainMenu(/*context*/);
-                                    break;
                                 }
+                                break;
                             }
-                            case 2:{
+                            case 2: {
                                 System.out.println("Old First Name: " + user.getFirstName());
                                 System.out.println("New First Name: ");
                                 String newFirstName = scanner.nextLine();
                                 try {
                                     user.setFirstName(newFirstName);
                                     userService.updateUser(user);
-                                }catch (Exception e){
+                                } catch (Exception e) {
                                     System.out.println("Failed to update the user!");
-                                }finally {
+                                } finally {
                                     mainMenu(/*context*/);
-                                    break;
                                 }
+                                break;
                             }
-                            case 3:{
+                            case 3: {
                                 System.out.println("Old Last Name: " + user.getLastName());
                                 System.out.println("New Last Name: ");
                                 String newLastName = scanner.nextLine();
                                 try {
                                     user.setLastName(newLastName);
                                     userService.updateUser(user);
-                                }catch (Exception e){
+                                } catch (Exception e) {
                                     System.out.println("Failed to update the user!");
                                 } finally {
                                     mainMenu(/*context*/);
-                                    break;
                                 }
+                                break;
                             }
-                            case 4:{
+                            case 4: {
                                 List<Task> userTasks = taskService.getTasksByUser(user);
-                                Iterator iterator = userTasks.iterator();
-                                while(iterator.hasNext()){
-                                    Task task = (Task) iterator.next();
+                                for (Task task : userTasks) {
                                     taskService.printTask(task);
                                 }
                                 Task selectedTask = selectTask();
                                 updateTask(selectedTask);
                             }
-                            default:{
+                            default: {
                                 System.out.println("There's no such option. Try again!");
-                                continue;
                             }
                         }
                     }
                 }
-                case 3:{
+                case 3 -> {
                     User user = selectUser();
-                    userService.printUser(user,false);
-                    try{
+                    userService.printUser(user, false);
+                    try {
                         userService.deleteUser(user);
                         System.out.println("User successfully deleted!");
-                    } catch (Exception e){
+                    } catch (Exception e) {
                         System.out.println("Failed to delete the user!");
                     } finally {
                         mainMenu(/*context*/);
                     }
-                    break;
                 }
-                case 4:{
+                case 4 -> {
                     List<User> users = userService.getAllUsers();
-                    Iterator iterator = users.iterator();
+                    Iterator<User> iterator = users.iterator();
                     System.out.println("\n=====All Users=====");
-                    while(iterator.hasNext()){
-                        User user = (User) iterator.next();
-                        userService.printUser(user,true);
+                    while (iterator.hasNext()) {
+                        User user = iterator.next();
+                        userService.printUser(user, true);
                         System.out.println("-------------");
                     }
                     mainMenu(/*context*/);
-                    break;
                 }
-                default:{
+                default -> {
                     System.out.println("There's no such option. Try again!\n");
-                    continue;
                 }
             }
         }
@@ -166,17 +168,20 @@ public class UserMenu{
         Scanner scanner = new Scanner(System.in);
         User newUser;
         System.out.println("\n=====Select User=====");
-        System.out.println("1. By Id" + "\n2. By Login\n");
+        System.out.println("""
+                1. By Id
+                2. By Login
+                """);
         while (true){
             int choice = scanner.nextInt();
-            switch (choice){
-                case 1:{
+            switch (choice) {
+                case 1 -> {
                     System.out.println("Enter user Id: ");
-                    while (true){
+                    while (true) {
                         int id = scanner.nextInt();
-                        try{
-                            newUser = userService.getUserById(Long.valueOf(id));
-                        }catch (Exception e){
+                        try {
+                            newUser = userService.getUserById((long) id);
+                        } catch (Exception e) {
                             System.out.println("No such user!");
                             continue;
                         }
@@ -184,22 +189,21 @@ public class UserMenu{
                         return newUser;
                     }
                 }
-                case 2: {
+                case 2 -> {
                     System.out.println("Enter user Login: ");
-                    while (true){
+                    while (true) {
                         String login = scanner.nextLine();
-                        try{
+                        try {
                             newUser = userService.getUserByLogin(login);
-                        }catch (Exception e){
+                        } catch (Exception e) {
                             System.out.println("No such user!");
                             continue;
                         }
                         return newUser;
                     }
                 }
-                default:{
+                default -> {
                     System.out.println("There's no such option. Try again!\n");
-                    continue;
                 }
             }
         }

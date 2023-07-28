@@ -9,6 +9,7 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -17,7 +18,7 @@ import javax.swing.*;
 import java.util.ArrayList;
 import java.util.List;
 
-@Repository
+@Component("userDAO")
 @Transactional(propagation = Propagation.REQUIRES_NEW)
 public class UserDAOImpl implements UserDAO{
     @Autowired
@@ -41,7 +42,7 @@ public class UserDAOImpl implements UserDAO{
             session.beginTransaction();
             session.save(user);
         } catch (Exception e) {
-            JOptionPane.showMessageDialog(null, e.getMessage(), "An Error Occurred trying to insert the element.", JOptionPane.OK_OPTION);
+            JOptionPane.showMessageDialog(null, e.getMessage(), "An Error Occurred trying to insert the element.", JOptionPane.ERROR_MESSAGE);
         }
     }
 
@@ -51,7 +52,7 @@ public class UserDAOImpl implements UserDAO{
             session.beginTransaction();
             session.update(user);
         } catch (Exception e) {
-            JOptionPane.showMessageDialog(null, e.getMessage(), "An Error Occurred trying to insert the element.", JOptionPane.OK_OPTION);
+            JOptionPane.showMessageDialog(null, e.getMessage(), "An Error Occurred trying to insert the element.", JOptionPane.ERROR_MESSAGE);
         }
     }
 
@@ -62,7 +63,7 @@ public class UserDAOImpl implements UserDAO{
             session.beginTransaction();
             user = session.load(User.class, userId);
         } catch (Exception e){
-            JOptionPane.showMessageDialog(null, e.getMessage(), "FindById Error", JOptionPane.OK_OPTION);
+            JOptionPane.showMessageDialog(null, e.getMessage(), "FindById Error", JOptionPane.ERROR_MESSAGE);
         }
         return  user;
     }
@@ -76,7 +77,7 @@ public class UserDAOImpl implements UserDAO{
             criteria.add(Restrictions.eq("login", login));
             user = (User) criteria.uniqueResult();
         } catch (Exception e){
-            JOptionPane.showMessageDialog(null, e.getMessage(), "FindByLogin Error", JOptionPane.OK_OPTION);
+            JOptionPane.showMessageDialog(null, e.getMessage(), "FindByLogin Error", JOptionPane.ERROR_MESSAGE);
         }
         return  user;
     }
@@ -88,7 +89,7 @@ public class UserDAOImpl implements UserDAO{
             session.beginTransaction();
             users = session.createCriteria(User.class).list();
         } catch (Exception e){
-            JOptionPane.showMessageDialog(null, e.getMessage(), "getAllUsers Error", JOptionPane.OK_OPTION);
+            JOptionPane.showMessageDialog(null, e.getMessage(), "getAllUsers Error", JOptionPane.ERROR_MESSAGE);
         }
         return users;
     }
@@ -99,7 +100,7 @@ public class UserDAOImpl implements UserDAO{
             session.getTransaction();
             session.delete(user);
         } catch (Exception e){
-            JOptionPane.showMessageDialog(null, e.getMessage(), "deleteUser Error", JOptionPane.OK_OPTION);
+            JOptionPane.showMessageDialog(null, e.getMessage(), "deleteUser Error", JOptionPane.ERROR_MESSAGE);
         }
     }
 
@@ -110,7 +111,7 @@ public class UserDAOImpl implements UserDAO{
             session.beginTransaction();
             user = task.getUser();
         } catch (Exception e){
-            JOptionPane.showMessageDialog(null, e.getMessage(), "getUserByTask Error", JOptionPane.OK_OPTION);
+            JOptionPane.showMessageDialog(null, e.getMessage(), "getUserByTask Error", JOptionPane.ERROR_MESSAGE);
         }
         return user;
     }

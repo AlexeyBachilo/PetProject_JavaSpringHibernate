@@ -35,11 +35,16 @@ public class TaskMenu {
         taskService = (TaskService) context.getBean("taskService");*/
         Scanner scanner = new Scanner(System.in);
         System.out.println("\n=====Task Menu=====");
-        System.out.println("1. Add Task" + "\n2. Update Task" + "\n3. Delete Task" + "\n4. See All Tasks\n");
+        System.out.println("""
+                1. Add Task
+                2. Update Task
+                3. Delete Task
+                4. See All Tasks
+                """);
         while (true){
             int choice = scanner.nextInt();
-            switch (choice){
-                case 1:{
+            switch (choice) {
+                case 1 -> {
                     User user = selectUser();
                     Task task = new Task();
                     System.out.println("Enter Task Name: ");
@@ -62,44 +67,39 @@ public class TaskMenu {
                         task.setUser(newUser);
                         taskService.addTask(task);
                         System.out.println("Task added successfully!");
-                    }catch (Exception e){
+                    } catch (Exception e) {
                         System.out.println("Failed to create a task!");
                     } finally {
                         mainMenu(/*context*/);
-                        break;
                     }
                 }
-                case 2:{
+                case 2 -> {
                     Task toUpdate = selectTask();
                     updateTask(toUpdate);
-                    break;
                 }
-                case 3:{
-                    try{
+                case 3 -> {
+                    try {
                         Task task = selectTask();
                         taskService.deleteTask(task);
                         System.out.println("Task successfully deleted!");
-                    } catch (Exception e){
+                    } catch (Exception e) {
                         System.out.println("Failed to delete the task!");
                     } finally {
                         mainMenu(/*context*/);
                     }
-                    break;
                 }
-                case 4:{
+                case 4 -> {
                     List<Task> tasks = taskService.getAllTasks();
-                    Iterator iterator = tasks.iterator();
+                    Iterator<Task> iterator = tasks.iterator();
                     System.out.println("\n=====All Tasks=====");
-                    while(iterator.hasNext()){
+                    while (iterator.hasNext()) {
                         Task task = (Task) iterator.next();
                         taskService.printTask(task);
                     }
                     mainMenu(/*context*/);
-                    break;
                 }
-                default:{
+                default -> {
                     System.out.println("There's no such option. Try again!\n");
-                    continue;
                 }
             }
         }
@@ -108,8 +108,14 @@ public class TaskMenu {
     protected static void updateTask(Task task) throws IOException {
         Scanner scanner = new Scanner(System.in);
         System.out.println("=====Update Task=====");
-        System.out.println("1. Update Task Name" + "\n2. Update Task Description" + "\n3. Update Deadline"
-                + "\n4. Update Task Points" + "\n5. Update Assigned User" + "\n6. Update Completion\n");
+        System.out.println("""
+                1. Update Task Name
+                2. Update Task Description
+                3. Update Deadline
+                4. Update Task Points
+                5. Update Assigned User
+                6. Update Completion
+                """);
         while (true){
             int choice = scanner.nextInt();
             switch (choice){
@@ -124,8 +130,8 @@ public class TaskMenu {
                         System.out.println("Failed to update the task!");
                     } finally {
                         mainMenu(/*context*/);
-                        break;
                     }
+                    break;
                 }
                 case 2:{
                     System.out.println("Old Task Description: " + task.getTaskDescription());
@@ -138,8 +144,8 @@ public class TaskMenu {
                         System.out.println("Failed to update the task!");
                     }finally {
                         mainMenu(/*context*/);
-                        break;
                     }
+                    break;
                 }
                 case 3:{
                     System.out.println("Old Deadline: " + task.getDeadline().toString());
@@ -153,8 +159,8 @@ public class TaskMenu {
                         System.out.println("Failed to update the task!");
                     } finally {
                         mainMenu(/*context*/);
-                        break;
                     }
+                    break;
                 }
                 case 4:{
                     System.out.println("Old Task Points Value: " + task.getTaskPoints());
@@ -167,8 +173,8 @@ public class TaskMenu {
                         System.out.println("Failed to update the task!");
                     }finally {
                         mainMenu(/*context*/);
-                        break;
                     }
+                    break;
                 }
                 case 5:{
                     System.out.println("Old Assigned User Login: " + task.getUser().getLogin());
@@ -183,7 +189,6 @@ public class TaskMenu {
                         }
                         else{
                             System.out.println("There's no such user. Try again!");
-                            continue;
                         }
                     }
                     break;
@@ -194,36 +199,22 @@ public class TaskMenu {
                     if(!completion){
                         System.out.println("Mark task as completed? Y/N: ");
                         String answer = scanner.nextLine();
-                        switch (answer){
-                            case "Y":{
-                                userService.completeTask(task);
-                            }
-                            default: {
-                                mainMenu(/*context*/);
-                                break;
-                            }
+                        if ("Y".equals(answer)) {
+                            userService.completeTask(task);
                         }
+                        mainMenu(/*context*/);
                     }
-                    else if (completion){
+                    else {
                         System.out.println("Mark task as uncompleted? Y/N");
                         String answer = scanner.nextLine();
-                        switch (answer){
-                            case "Y":{
-                                userService.completeTask(task);
-                            }
-                            default: {
-                                mainMenu(/*context*/);
-                                break;
-                            }
+                        if ("Y".equals(answer)) {
+                            userService.completeTask(task);
                         }
-                    }
-                    else{
-                        break;
+                        mainMenu(/*context*/);
                     }
                 }
                 default:{
                     System.out.println("There's no such option. Try again!");
-                    continue;
                 }
             }
         }
@@ -234,45 +225,45 @@ public class TaskMenu {
         TaskService taskService = new TaskService();
         Task newTask = null;
         System.out.println("\n=====Select Task=====");
-        System.out.println("1. By Id" + "\n2. By Task Name\n");
+        System.out.println("""
+                1. By Id
+                2. By Task Name
+                """);
         while (true){
             int choice = scanner.nextInt();
-            switch (choice){
-                case 1:{
+            switch (choice) {
+                case 1 -> {
                     System.out.println("Enter task Id: ");
-                    while (true){
+                    while (true) {
                         int id = scanner.nextInt();
-                        try{
-                            newTask = taskService.getTaskById(Long.valueOf(id));
-                        }catch (Exception e){
+                        try {
+                            newTask = taskService.getTaskById((long) id);
+                        } catch (Exception e) {
                             System.out.println("No such task!");
                             continue;
                         }
                         return newTask;
                     }
                 }
-                case 2: {
+                case 2 -> {
                     System.out.println("Enter Task Name: ");
-                    while (true){
+                    while (true) {
                         String taskName = scanner.nextLine();
-                        try{
+                        try {
                             List<Task> tasks = taskService.getAllTasks();
-                            Iterator iterator = tasks.iterator();
-                            while(iterator.hasNext()){
-                                Task foundTask = (Task) iterator.next();
-                                if(foundTask.getTaskName().equals(taskName)) newTask = foundTask;
+                            for (Task foundTask : tasks) {
+                                if (foundTask.getTaskName().equals(taskName)) newTask = foundTask;
                             }
                             if (newTask == null) throw new Exception();
-                        }catch (Exception e){
+                        } catch (Exception e) {
                             System.out.println("No such task!");
                             continue;
                         }
                         return newTask;
                     }
                 }
-                default:{
+                default -> {
                     System.out.println("There's no such option. Try again!\n");
-                    continue;
                 }
             }
         }

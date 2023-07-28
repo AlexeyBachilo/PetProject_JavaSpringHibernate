@@ -8,7 +8,6 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Propagation;
@@ -18,9 +17,9 @@ import javax.swing.*;
 import java.util.ArrayList;
 import java.util.List;
 
-@Repository
+@Component("taskDAO")
 @Transactional(propagation = Propagation.REQUIRES_NEW)
-public class TaskDAOImpl implements TaskDAO{
+public class TaskDAOImpl implements TaskDAO {
     @Autowired
     @Resource(name = "sessionFactory")
     private SessionFactory sessionFactory;
@@ -42,7 +41,7 @@ public class TaskDAOImpl implements TaskDAO{
             session.beginTransaction();
             session.save(task);
         } catch (Exception ex){
-            JOptionPane.showMessageDialog(null, ex.getMessage(), "addTask Error", JOptionPane.OK_OPTION);
+            JOptionPane.showMessageDialog(null, ex.getMessage(), "addTask Error", JOptionPane.ERROR_MESSAGE);
         }
     }
 
@@ -52,7 +51,7 @@ public class TaskDAOImpl implements TaskDAO{
             session.beginTransaction();
             session.update(task);
         } catch (Exception ex){
-            JOptionPane.showMessageDialog(null, ex.getMessage(), "updateTsk Error", JOptionPane.OK_OPTION);
+            JOptionPane.showMessageDialog(null, ex.getMessage(), "updateTsk Error", JOptionPane.ERROR_MESSAGE);
         }
     }
 
@@ -63,19 +62,19 @@ public class TaskDAOImpl implements TaskDAO{
             session.beginTransaction();
             task = session.load(Task.class, taskId);
         } catch (Exception ex){
-            JOptionPane.showMessageDialog(null, ex.getMessage(), "getTaskById Error", JOptionPane.OK_OPTION);
+            JOptionPane.showMessageDialog(null, ex.getMessage(), "getTaskById Error", JOptionPane.ERROR_MESSAGE);
         }
         return task;
     }
 
     public List<Task> getAllTasks(){
-        List tasks = new ArrayList<Task>();
+        List tasks = new ArrayList<>();
         try{
             Session session = sessionFactory.getCurrentSession();
             session.beginTransaction();
             tasks = session.createCriteria(Task.class).list();
         } catch (Exception ex){
-            JOptionPane.showMessageDialog(null, ex.getMessage(), "getAllTasks Error", JOptionPane.OK_OPTION);
+            JOptionPane.showMessageDialog(null, ex.getMessage(), "getAllTasks Error", JOptionPane.ERROR_MESSAGE);
         }
         return tasks;
     }
@@ -86,7 +85,7 @@ public class TaskDAOImpl implements TaskDAO{
             session.beginTransaction();
             session.delete(task);
         } catch (Exception ex){
-            JOptionPane.showMessageDialog(null, ex.getMessage(), "deleteTask Error", JOptionPane.OK_OPTION);
+            JOptionPane.showMessageDialog(null, ex.getMessage(), "deleteTask Error", JOptionPane.ERROR_MESSAGE);
         }
     }
 
@@ -100,7 +99,7 @@ public class TaskDAOImpl implements TaskDAO{
             tasks = criteria.list();
             user.setTasks(tasks);
         } catch (Exception ex){
-            JOptionPane.showMessageDialog(null, ex.getMessage(), "getTasksByUser Error", JOptionPane.OK_OPTION);
+            JOptionPane.showMessageDialog(null, ex.getMessage(), "getTasksByUser Error", JOptionPane.ERROR_MESSAGE);
         }
         return tasks;
     }

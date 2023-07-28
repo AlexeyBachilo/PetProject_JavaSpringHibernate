@@ -6,6 +6,8 @@ import jakarta.annotation.Resource;
 import org.hibernate.SessionFactory;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.cfg.Configuration;
+import org.springframework.stereotype.Component;
+
 
 public class HibernateSessionFactoryUtil {
     @Resource(name = "sessionFactory")
@@ -14,7 +16,7 @@ public class HibernateSessionFactoryUtil {
     private HibernateSessionFactoryUtil () {
         try{
             if (sessionFactory == null){
-                Configuration configuration = new Configuration().configure();
+                Configuration configuration = new Configuration().configure("hibernate.cfg.xml");
                 configuration.addAnnotatedClass(User.class);
                 configuration.addAnnotatedClass(Task.class);
                 StandardServiceRegistryBuilder builder = new StandardServiceRegistryBuilder().applySettings(configuration.getProperties());

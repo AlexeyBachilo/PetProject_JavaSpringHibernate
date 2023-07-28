@@ -96,4 +96,10 @@ public class User implements Serializable {
     public int hashCode() {
         return Objects.hash(userId, login, firstName, lastName, userPoints, tasks);
     }
+
+    @Override
+    public String toString(){
+        return "User Id: " + getUserId() + "\nUser Login: " + getLogin() + "\nFirst Name: " + getFirstName()
+                +"\nLast Name: " + getLastName() + "\nCurrent Points: " + getUserPoints();
+    }
 }

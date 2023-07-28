@@ -14,29 +14,26 @@ import static com.petproject.menu.TaskMenu.taskMenu;
 
 @ComponentScan
 public class MainMenu {
-    @Autowired
-    @Resource(name="userService")
-    static UserService userService;
-    @Autowired
-    @Resource(name="taskService")
-    static TaskService taskService;
+
 
     public static void mainMenu(/*ApplicationContext ctx*/) throws IOException {
         Scanner scanner = new Scanner(System.in);
         System.out.println("\n=====Menu=====");
-        System.out.println("1. User menu" + "\n2. Task menu\n");
+        System.out.println("""
+                1. User menu
+                2. Task menu
+                """);
         while(true){
             int choice = scanner.nextInt();
-            switch (choice){
-                case 1:{
+            switch (choice) {
+                case 1 -> {
                     userMenu(/*ctx*/);
                 }
-                case 2:{
+                case 2 -> {
                     taskMenu(/*ctx*/);
                 }
-                default:{
+                default -> {
                     System.out.println("There's no such option. Try again!\n");
-                    continue;
                 }
             }
         }

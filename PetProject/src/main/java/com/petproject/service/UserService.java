@@ -6,20 +6,18 @@ import com.petproject.entity.User;
 
 import jakarta.annotation.Resource;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.ComponentScan;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.persistence.PersistenceUnit;
 import java.util.Iterator;
 import java.util.List;
 
 @Service("userService")
 @Transactional(propagation = Propagation.REQUIRES_NEW)
-@ComponentScan
 public class UserService {
     @Autowired
     @Resource(name = "userDAO")
@@ -29,6 +27,14 @@ public class UserService {
     private TaskService taskService;
 
     public UserService() {
+    }
+
+    public TaskService getTaskService() {
+        return taskService;
+    }
+
+    public void setTaskService(TaskService taskService) {
+        this.taskService = taskService;
     }
 
     public UserDAOImpl getUserDAO() {
@@ -74,8 +80,7 @@ public class UserService {
     }
 
     public void printUser(User user, boolean printTasks){
-        System.out.println("User Id: " + user.getUserId() + "\nUser Login: " + user.getLogin() + "\nFirst Name: " + user.getFirstName()
-                +"\nLast Name: " + user.getLastName() + "\nCurrent Points: " + user.getUserPoints());
+        System.out.println(user.toString());
         if(printTasks){
             taskService.printTasksByUser(user);
             }
