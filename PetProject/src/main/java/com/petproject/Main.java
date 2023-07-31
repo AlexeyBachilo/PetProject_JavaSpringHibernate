@@ -1,5 +1,6 @@
 package com.petproject;
 
+import com.petproject.config.AppInitializer;
 import com.petproject.entity.Task;
 import com.petproject.entity.User;
 import com.petproject.service.TaskService;
