@@ -22,17 +22,11 @@ import static com.petproject.menu.UserMenu.selectUser;
 @ComponentScan
 public class TaskMenu {
     @Autowired
-    @Resource(name="userService")
     static UserService userService;
     @Autowired
-    @Resource(name="taskService")
     static TaskService taskService;
-    static ApplicationContext context;
 
-    protected static void taskMenu(/*ApplicationContext ctx*/) throws IOException {
-/*        context = ctx;
-        userService = (UserService) context.getBean("userService");
-        taskService = (TaskService) context.getBean("taskService");*/
+    protected static void taskMenu() throws IOException {
         Scanner scanner = new Scanner(System.in);
         System.out.println("\n=====Task Menu=====");
         System.out.println("""
@@ -70,7 +64,7 @@ public class TaskMenu {
                     } catch (Exception e) {
                         System.out.println("Failed to create a task!");
                     } finally {
-                        mainMenu(/*context*/);
+                        mainMenu();
                     }
                 }
                 case 2 -> {
@@ -85,7 +79,7 @@ public class TaskMenu {
                     } catch (Exception e) {
                         System.out.println("Failed to delete the task!");
                     } finally {
-                        mainMenu(/*context*/);
+                        mainMenu();
                     }
                 }
                 case 4 -> {
@@ -96,7 +90,7 @@ public class TaskMenu {
                         Task task = (Task) iterator.next();
                         taskService.printTask(task);
                     }
-                    mainMenu(/*context*/);
+                    mainMenu();
                 }
                 default -> {
                     System.out.println("There's no such option. Try again!\n");
@@ -129,7 +123,7 @@ public class TaskMenu {
                     }catch (Exception e){
                         System.out.println("Failed to update the task!");
                     } finally {
-                        mainMenu(/*context*/);
+                        mainMenu();
                     }
                     break;
                 }
@@ -143,7 +137,7 @@ public class TaskMenu {
                     }catch (Exception e){
                         System.out.println("Failed to update the task!");
                     }finally {
-                        mainMenu(/*context*/);
+                        mainMenu();
                     }
                     break;
                 }
@@ -158,7 +152,7 @@ public class TaskMenu {
                     }catch (Exception e){
                         System.out.println("Failed to update the task!");
                     } finally {
-                        mainMenu(/*context*/);
+                        mainMenu();
                     }
                     break;
                 }
@@ -172,7 +166,7 @@ public class TaskMenu {
                     }catch (Exception e){
                         System.out.println("Failed to update the task!");
                     }finally {
-                        mainMenu(/*context*/);
+                        mainMenu();
                     }
                     break;
                 }
@@ -202,7 +196,7 @@ public class TaskMenu {
                         if ("Y".equals(answer)) {
                             userService.completeTask(task);
                         }
-                        mainMenu(/*context*/);
+                        mainMenu();
                     }
                     else {
                         System.out.println("Mark task as uncompleted? Y/N");
@@ -210,7 +204,7 @@ public class TaskMenu {
                         if ("Y".equals(answer)) {
                             userService.completeTask(task);
                         }
-                        mainMenu(/*context*/);
+                        mainMenu();
                     }
                 }
                 default:{

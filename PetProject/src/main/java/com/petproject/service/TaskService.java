@@ -1,59 +1,40 @@
 package com.petproject.service;
 
-import com.petproject.DAO.TaskDAOImpl;
 import com.petproject.entity.Task;
 import com.petproject.entity.User;
+import com.petproject.repository.TaskRepository;
 import jakarta.annotation.Resource;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.ComponentScan;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.persistence.PersistenceUnit;
 import java.util.Iterator;
 import java.util.List;
 
-@Service("taskService")
+@Service
 @Transactional(propagation = Propagation.REQUIRES_NEW)
 public class TaskService {
     @Autowired
-    @Resource(name = "taskDAO")
-    private TaskDAOImpl taskDAO;
+    TaskRepository taskRepository;
     @Autowired
-    @Resource(name = "userService")
-    private UserService userService;
+    UserService userService;
 
-    public TaskService() {
+    public void addTask(Task task) {taskRepository.saveAndFlush(task);}
+
+    public void updateTask(Task task) {
+        taskRepository.saveAndFlush(task);
     }
 
-    public UserService getUserService() {
-        return userService;
+    public void deleteTask(Task task) {taskRepository.delete(task);}
+
+    public Task getTaskById (Long id) {return taskRepository.getReferenceById(id);}
+
+    public List<Task> getTasksByUser (User user) {
+        return taskRepository.getTasksByUser(user.getUserId());
     }
 
-    public void setUserService(UserService userService) {
-        this.userService = userService;
-    }
-
-    public TaskDAOImpl getTaskDAO() {
-        return taskDAO;
-    }
-
-    public void setTaskDAO(TaskDAOImpl taskDAO) {
-        this.taskDAO = taskDAO;
-    }
-
-    public void addTask(Task task) {taskDAO.addTask(task);}
-
-    public void updateTask(Task task) {taskDAO.updateTask(task.getTaskId(),task);}
-
-    public void deleteTask(Task task) {taskDAO.deleteTask(task);}
-
-    public Task getTaskById (Long id) {return taskDAO.getTaskById(id);}
-
-    public List<Task> getTasksByUser (User user) {return taskDAO.getTasksByUser(user);}
-
-    public List<Task> getAllTasks () {return taskDAO.getAllTasks();}
+    public List<Task> getAllTasks () {return taskRepository.findAll();}
 
     public void printTask(Task task){
         System.out.println(task.toString() +"\nAssigned User: " + (userService.getUserByTask(task).getLogin()));

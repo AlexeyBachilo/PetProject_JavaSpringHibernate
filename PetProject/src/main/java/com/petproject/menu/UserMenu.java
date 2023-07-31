@@ -21,18 +21,12 @@ import static com.petproject.menu.TaskMenu.updateTask;
 @ComponentScan
 public class UserMenu{
     @Autowired
-    @Resource(name="userService")
     static UserService userService;
     @Autowired
-    @Resource(name="taskService")
     static TaskService taskService;
-    static ApplicationContext context;
 
 
-    protected static void userMenu(/*ApplicationContext ctx*/) throws IOException {
- /*       context = ctx;
-        userService = (UserService) context.getBean("userService");
-        taskService = (TaskService) context.getBean("taskService");*/
+    protected static void userMenu() throws IOException {
         Scanner scanner = new Scanner(System.in);
         System.out.println("\n=====User Menu=====");
         System.out.println("""
@@ -62,7 +56,7 @@ public class UserMenu{
                     } catch (Exception e) {
                         System.out.println("Failed to create a user!");
                     } finally {
-                        mainMenu(/*context*/);
+                        mainMenu();
                         scanner.close();
                     }
                 }
@@ -88,7 +82,7 @@ public class UserMenu{
                                 } catch (Exception e) {
                                     System.out.println("Failed to update the user!");
                                 } finally {
-                                    mainMenu(/*context*/);
+                                    mainMenu();
                                 }
                                 break;
                             }
@@ -102,7 +96,7 @@ public class UserMenu{
                                 } catch (Exception e) {
                                     System.out.println("Failed to update the user!");
                                 } finally {
-                                    mainMenu(/*context*/);
+                                    mainMenu();
                                 }
                                 break;
                             }
@@ -116,7 +110,7 @@ public class UserMenu{
                                 } catch (Exception e) {
                                     System.out.println("Failed to update the user!");
                                 } finally {
-                                    mainMenu(/*context*/);
+                                    mainMenu();
                                 }
                                 break;
                             }
@@ -143,7 +137,7 @@ public class UserMenu{
                     } catch (Exception e) {
                         System.out.println("Failed to delete the user!");
                     } finally {
-                        mainMenu(/*context*/);
+                        mainMenu();
                     }
                 }
                 case 4 -> {
@@ -155,7 +149,7 @@ public class UserMenu{
                         userService.printUser(user, true);
                         System.out.println("-------------");
                     }
-                    mainMenu(/*context*/);
+                    mainMenu();
                 }
                 default -> {
                     System.out.println("There's no such option. Try again!\n");

@@ -1,9 +1,5 @@
 package com.petproject.menu;
 
-import com.petproject.service.TaskService;
-import com.petproject.service.UserService;
-import jakarta.annotation.Resource;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.ComponentScan;
 
 import java.io.IOException;
@@ -16,7 +12,7 @@ import static com.petproject.menu.TaskMenu.taskMenu;
 public class MainMenu {
 
 
-    public static void mainMenu(/*ApplicationContext ctx*/) throws IOException {
+    public static void mainMenu() throws IOException {
         Scanner scanner = new Scanner(System.in);
         System.out.println("\n=====Menu=====");
         System.out.println("""
@@ -27,10 +23,10 @@ public class MainMenu {
             int choice = scanner.nextInt();
             switch (choice) {
                 case 1 -> {
-                    userMenu(/*ctx*/);
+                    userMenu();
                 }
                 case 2 -> {
-                    taskMenu(/*ctx*/);
+                    taskMenu();
                 }
                 default -> {
                     System.out.println("There's no such option. Try again!\n");
