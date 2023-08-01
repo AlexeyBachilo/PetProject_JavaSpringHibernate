@@ -1,9 +1,7 @@
 package com.petproject.config;
 
 import jakarta.annotation.Resource;
-import org.hibernate.ejb.HibernatePersistence;
 import org.hibernate.jpa.HibernatePersistenceProvider;
-import org.springframework.boot.orm.jpa.EntityManagerFactoryBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
@@ -19,10 +17,10 @@ import javax.sql.DataSource;
 import java.util.Properties;
 
 @Configuration
-@EnableJpaRepositories("com.petproject.repository")
+@EnableJpaRepositories("com.petproject.repository.")
 @PropertySource("application.properties")
 @EnableTransactionManagement
-@ComponentScan("com.petproject.*")
+@ComponentScan("com.petproject.")
 public class MyConfiguration {
     private static final String PROP_DATABASE_DRIVER = "spring.datasource.driver-class-name";
     public static final String PROP_DATABASE_URL = "spring.datasource.url";
@@ -35,6 +33,7 @@ public class MyConfiguration {
     public static final String PROP_HIBERNATE_FORMAT_SQL = "spring.jpa.properties.hibernate.format-sql";
 
     public static final String PROP_ENTITYMANAGER_PACKAGES_TO_SCAN = "spring.jpa.entitymanager.packages-to-scan";
+    public static final String PROP_WEB_APPLICATION_TYPE = "spring.main.web-application-type";
 
     @Resource
     Environment environment;
@@ -54,6 +53,7 @@ public class MyConfiguration {
     @Bean
     public LocalContainerEntityManagerFactoryBean entityManagerFactory(){
         LocalContainerEntityManagerFactoryBean entityManagerFactoryBean = new LocalContainerEntityManagerFactoryBean();
+
         entityManagerFactoryBean.setDataSource(dataSource());
         entityManagerFactoryBean.setPersistenceProviderClass(HibernatePersistenceProvider.class);
         entityManagerFactoryBean.setPackagesToScan(environment.getRequiredProperty(PROP_ENTITYMANAGER_PACKAGES_TO_SCAN));

@@ -1,6 +1,6 @@
 package com.petproject;
 
-import com.petproject.config.AppInitializer;
+
 import com.petproject.entity.Task;
 import com.petproject.entity.User;
 import com.petproject.service.TaskService;
@@ -8,7 +8,9 @@ import com.petproject.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
+import org.springframework.boot.WebApplicationType;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.builder.SpringApplicationBuilder;
 
 import java.util.Iterator;
 import java.util.List;
@@ -24,7 +26,7 @@ public class Main implements CommandLineRunner {
     TaskService taskService;
 
     public static void main(String[] args) {
-        SpringApplication.run(Main.class, args);
+        new SpringApplicationBuilder(Main.class).web(WebApplicationType.NONE).run(args);
     }
 
     @Override
