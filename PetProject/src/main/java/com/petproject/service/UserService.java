@@ -4,7 +4,7 @@ import com.petproject.entity.Task;
 import com.petproject.entity.User;
 
 import com.petproject.repository.UserRepository;
-import jakarta.annotation.Resource;
+import org.apache.logging.log4j.core.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
@@ -20,41 +20,54 @@ public class UserService {
     @Autowired
     TaskService taskService;
 
+    protected static Logger logger;
+
     public void addUser(User user) {
+        logger.debug("Adding user");
         userRepository.saveAndFlush(user);
     }
 
     public void updateUser(User user) {
+        logger.debug("Updating user");
         userRepository.saveAndFlush(user);
     }
 
     public void deleteUser(User user) {
+        logger.debug("Deleting user");
         userRepository.delete(user);
     }
 
     public User getUserById(Long id) {
+        logger.debug("Getting user by Id");
         return userRepository.getReferenceById(id);
     }
 
-    public User getUserByLogin(String login) {return userRepository.getUserByLogin(login);}
+    public User getUserByLogin(String login) {
+        logger.debug("Getting user by Login");
+        return userRepository.getUserByLogin(login);}
 
     public User getUserByTask(Task task) {
+        logger.debug("Getting user by Task");
         return task.getUser();
     }
 
     public List<User> getAllUsers() {
+        logger.debug("Getting all users");
         return userRepository.findAll();
     }
 
     public void completeTask(Task task){
+        logger.debug("Marking task as completed");
         task.setisCompleted(!task.getisCompleted());
         User user = getUserByTask(task);
+        logger.debug("Adding taskpoint to user");
         user.setUserPoints(task.getisCompleted() ? user.getUserPoints() + task.getTaskPoints() : user.getUserPoints() - task.getTaskPoints());
         taskService.updateTask(task);
         updateUser(user);
     }
 
     public void printUser(User user, boolean printTasks){
+        logger.debug("Printing user");
         System.out.println(user.toString());
         if(printTasks){
             taskService.printTasksByUser(user);

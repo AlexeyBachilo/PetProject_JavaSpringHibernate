@@ -7,11 +7,14 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.env.Environment;
+import org.springframework.data.jpa.provider.PersistenceProvider;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
+import org.springframework.web.servlet.ViewResolver;
+import org.springframework.web.servlet.view.InternalResourceViewResolver;
 
 import javax.sql.DataSource;
 import java.util.Properties;
@@ -20,7 +23,7 @@ import java.util.Properties;
 @EnableJpaRepositories("com.petproject.repository.")
 @PropertySource("application.properties")
 @EnableTransactionManagement
-@ComponentScan("com.petproject.")
+@ComponentScan("com.petproject.*")
 public class MyConfiguration {
     private static final String PROP_DATABASE_DRIVER = "spring.datasource.driver-class-name";
     public static final String PROP_DATABASE_URL = "spring.datasource.url";
@@ -33,7 +36,6 @@ public class MyConfiguration {
     public static final String PROP_HIBERNATE_FORMAT_SQL = "spring.jpa.properties.hibernate.format-sql";
 
     public static final String PROP_ENTITYMANAGER_PACKAGES_TO_SCAN = "spring.jpa.entitymanager.packages-to-scan";
-    public static final String PROP_WEB_APPLICATION_TYPE = "spring.main.web-application-type";
 
     @Resource
     Environment environment;
@@ -69,6 +71,14 @@ public class MyConfiguration {
         transactionManager.setEntityManagerFactory(entityManagerFactory().getObject());
 
         return transactionManager;
+    }
+
+    @Bean
+    public ViewResolver viewResolver(){
+        InternalResourceViewResolver resolver = new InternalResourceViewResolver();
+        resolver.setPrefix("WEB-INF/jsp/");
+        resolver.setSuffix(".jsp");
+        return resolver;
     }
 
     @Bean
