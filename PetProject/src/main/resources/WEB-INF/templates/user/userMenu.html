@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=URF-8">
+        <title>PetProject</title>
+    </head>
+    <body>
+    <div class="userMenu" th:unless="${#lists.isEmpty(users)}">
+        <h1>=====User Menu=====</h1>
+
+        <table style="border: 1px solid; width: 500px; text-align:center">
+            <thead style="background:#fcf">
+                <tr>
+                    <th th:text="#{user.userId}">Id</th>
+                    <th th:text="#{user.login}">Login</th>
+                    <th th:text="#{user.firstName}">First Name</th>
+                    <th th:text="#{user.lastName}">Last Name</th>
+                    <th th:text="#{user.userPoints}">Points</th>
+                    <th th:text="#{user.tasks}">Tasks</th>
+                </tr>
+            </thead>
+            <tbody>
+                   <tr th:each = "user: ${users}">
+                       <td th:text="${user.userId}"/>
+                       <td th:text="${user.login}"/>
+                       <td th:text="${user.firstName}"/>
+                       <td th:text="${user.lastName}"/>
+                       <td th:text="${user.userPoints}"/>
+                       <td>
+                        <table>
+                            <tbody>
+                            <tr th:each = "task: ${user.tasks}">
+                                <td th:text="${task.taskName}"/></td>
+                                <td th:text="${task.taskDescription}"/></td>
+                                <td th:text="${task.deadline}"/></td>
+                                <td th:text="#{|bool.${task.isCompleted}|}">Yes</td>
+                            </tr>
+                            </tbody>
+                        </table>
+                       </td>
+                    <td><a href="editUserUrl" th:href="@{http://localhost:8080/petproject/main/users/update">Edit</a></td>
+                    <td><a href="deleteUserUrl" th:href="@{http://localhost:8080/petproject/main/users/delete}">Delete</a></td>
+                    <td><a href="addUserUrl" th:href="@{http://localhost:8080/petproject/main/users/add}">Add</a></td>
+                   </tr>
+            </tbody>
+        </table>
+    </div>
+    <span th:if="${#lists.isEmpty(users)}">There are currently no users in the list. <a href="addUserUrl" th:href="@{http://localhost:8080/petproject/main/users/add}">Add</a> new user.</span>
+    </body>
+</html>
