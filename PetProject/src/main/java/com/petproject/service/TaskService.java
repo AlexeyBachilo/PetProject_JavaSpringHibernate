@@ -3,8 +3,9 @@ package com.petproject.service;
 import com.petproject.entity.Task;
 import com.petproject.entity.User;
 import com.petproject.repository.TaskRepository;
-import org.apache.logging.log4j.core.Logger;
+import org.apache.logging.log4j.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -18,9 +19,10 @@ public class TaskService {
     @Autowired
     TaskRepository taskRepository;
     @Autowired
+    @Lazy
     UserService userService;
 
-    protected static Logger logger;
+    protected static Logger logger = LogManager.getLogger("TaskServiceLogger");
 
     public void addTask(Task task) {
         logger.debug("Adding task");

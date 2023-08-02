@@ -4,9 +4,10 @@ import com.petproject.entity.Task;
 import com.petproject.entity.User;
 
 import com.petproject.repository.UserRepository;
-import org.apache.logging.log4j.core.Logger;
+import org.apache.logging.log4j.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -18,9 +19,10 @@ public class UserService {
     @Autowired
     UserRepository userRepository;
     @Autowired
+    @Lazy
     TaskService taskService;
 
-    protected static Logger logger;
+    protected static Logger logger = LogManager.getLogger("UserServiceLogger");
 
     public void addUser(User user) {
         logger.debug("Adding user");

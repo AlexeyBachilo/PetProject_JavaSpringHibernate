@@ -2,12 +2,8 @@ package com.petproject.entity;
 
 
 import com.petproject.service.TaskService;
-import org.springframework.transaction.annotation.Transactional;
-
-import javax.persistence.*;
-import javax.persistence.Id;
+import jakarta.persistence.*;
 import java.io.Serializable;
-import java.time.LocalDate;
 import java.util.List;
 import java.util.Objects;
 
@@ -29,8 +25,6 @@ public class User implements Serializable {
     private int userPoints = 0;
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<Task> tasks = null;
-
-    public User(){}
 
     public Long getUserId() {
         return userId;

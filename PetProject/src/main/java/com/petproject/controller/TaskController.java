@@ -2,27 +2,23 @@ package com.petproject.controller;
 
 import com.petproject.entity.Task;
 import com.petproject.service.TaskService;
-import org.apache.logging.log4j.core.Logger;
+import org.apache.logging.log4j.*;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@Controller
-@RequestMapping("/main")
+@RestController
+@RequestMapping("/petproject/main")
 public class TaskController {
 
-    protected static Logger logger;
+    protected static Logger logger = LogManager.getLogger("TaskControllerLogger");
 
     @Autowired
     TaskService taskService;
 
-    @RequestMapping(value = "/tasks", method = RequestMethod.GET)
+    @GetMapping(value = "/tasks")
     public String getTasks(Model model){
         logger.debug("Recieved request to show all tasks");
         List<Task> tasks = taskService.getAllTasks();
@@ -30,21 +26,21 @@ public class TaskController {
         return "taskMenu";
     }
 
-    @RequestMapping(value = "/tasks/add", method = RequestMethod.GET)
+    @GetMapping(value = "/tasks/add")
     public String getAdd(Model model){
         logger.debug("Recieved request to show add tasl page");
         model.addAttribute("taskAttribute", new Task());
         return "addTask";
     }
 
-    @RequestMapping(value = "/tasks/add", method = RequestMethod.POST)
+    @PostMapping(value = "/tasks/add")
     public String add(@ModelAttribute("taskAttribute") Task task){
         logger.debug("Recieved request to add new task");
         taskService.addTask(task);
         return "addedTask";
     }
 
-    @RequestMapping(value = "/tasks/delete", method = RequestMethod.GET)
+    @GetMapping(value = "/tasks/delete")
     public String delete(@RequestParam(value = "taskId") Long taskId, Model model){
         logger.debug("Recieved request to delete task");
         Task task = taskService.getTaskById(taskId);
@@ -53,14 +49,14 @@ public class TaskController {
         return "deletedTask";
     }
 
-    @RequestMapping(value = "/tasks/update", method = RequestMethod.GET)
+    @GetMapping(value = "/tasks/update")
     public String getUpdate(@RequestParam(value = "taskId") Long taskId, Model model){
         logger.debug("Recieved request to show update task page");
         model.addAttribute("taskAttribute", taskService.getTaskById(taskId));
         return "updateTask";
     }
 
-    @RequestMapping(value = "/tasks/update", method = RequestMethod.POST)
+    @PostMapping(value = "/tasks/update")
     public String saveUpdate(@ModelAttribute("taskAttribute") Task task, @RequestParam(value = "taskId") Long taskId, Model model){
         logger.debug("Recieved request to update task");
         task.setTaskId(taskId);

@@ -1,7 +1,6 @@
 package com.petproject.entity;
 
-
-import javax.persistence.*;
+import jakarta.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.Objects;
@@ -27,8 +26,6 @@ public class Task implements Serializable {
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "assigneduserid")
     private User user = null;
-
-    public Task(){}
 
     public Long getTaskId() {
         return taskId;

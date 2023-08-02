@@ -2,12 +2,12 @@ package com.petproject.config;
 
 import jakarta.annotation.Resource;
 import org.hibernate.jpa.HibernatePersistenceProvider;
+import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.env.Environment;
-import org.springframework.data.jpa.provider.PersistenceProvider;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import org.springframework.orm.jpa.JpaTransactionManager;
@@ -20,10 +20,11 @@ import javax.sql.DataSource;
 import java.util.Properties;
 
 @Configuration
-@EnableJpaRepositories("com.petproject.repository.")
+@EnableJpaRepositories("com.petproject.repository")
 @PropertySource("application.properties")
 @EnableTransactionManagement
-@ComponentScan("com.petproject.*")
+@ComponentScan(basePackages = {"com.*"})
+@EntityScan
 public class MyConfiguration {
     private static final String PROP_DATABASE_DRIVER = "spring.datasource.driver-class-name";
     public static final String PROP_DATABASE_URL = "spring.datasource.url";
@@ -36,6 +37,9 @@ public class MyConfiguration {
     public static final String PROP_HIBERNATE_FORMAT_SQL = "spring.jpa.properties.hibernate.format-sql";
 
     public static final String PROP_ENTITYMANAGER_PACKAGES_TO_SCAN = "spring.jpa.entitymanager.packages-to-scan";
+
+    public static final String PROP_VIEW_PREFIX = "spring.mvc.view.prefix";
+    public static final String PROP_VIEW_SUFFIX = "spring.mvc.view.suffix";
 
     @Resource
     Environment environment;
@@ -76,8 +80,8 @@ public class MyConfiguration {
     @Bean
     public ViewResolver viewResolver(){
         InternalResourceViewResolver resolver = new InternalResourceViewResolver();
-        resolver.setPrefix("WEB-INF/jsp/");
-        resolver.setSuffix(".jsp");
+        resolver.setPrefix(environment.getRequiredProperty(PROP_VIEW_PREFIX));
+        resolver.setSuffix(environment.getRequiredProperty(PROP_VIEW_SUFFIX));
         return resolver;
     }
 

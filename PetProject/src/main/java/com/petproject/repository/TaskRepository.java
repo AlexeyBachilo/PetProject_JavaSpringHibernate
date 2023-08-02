@@ -13,6 +13,6 @@ import java.util.List;
 @Transactional
 public interface TaskRepository extends JpaRepository<Task, Long> {
 
-    @Query("SELECT t FROM tasks t WHERE t.assigneduserid IN :id")
+    @Query("SELECT t FROM Task t WHERE t.user.getUserId() IN :id")
     List<Task> getTasksByUser(@Param("id") Long userId);
 }

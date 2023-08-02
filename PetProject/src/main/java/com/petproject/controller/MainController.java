@@ -1,14 +1,17 @@
 package com.petproject.controller;
 
-import org.apache.logging.log4j.core.Logger;
-import org.springframework.stereotype.Controller;
+import org.apache.logging.log4j.*;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
-@Controller
+
+@RestController
+@RequestMapping("/petproject")
 public class MainController {
-    protected static Logger logger;
+    private static Logger logger = LogManager.getLogger("MainControllerLogger");
 
-    @RequestMapping(value = "/main")
+    @GetMapping(value = "/main")
     public String mainMenu(){
         logger.debug("Accessing main menu");
         return "mainMenu";
