@@ -4,12 +4,16 @@ import com.petproject.entity.User;
 import com.petproject.service.UserService;
 import org.apache.logging.log4j.*;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.ui.Model;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.ModelMap;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
 import java.util.List;
 
-@RestController
+@Controller
+@EnableWebMvc
 @RequestMapping("/petproject/main")
 public class UserController {
 
@@ -18,49 +22,60 @@ public class UserController {
     @Autowired
     UserService userService;
 
+    @ModelAttribute("userAttribute")
+    public List<User> populateUsers(){
+        return this.userService.getAllUsers();
+    }
+
     @GetMapping(value = "/users")
-    public String getUsers(Model model){
+    public String getUsers(){
         logger.debug("Recieved request to show all users");
-        List<User> users = userService.getAllUsers();
-        model.addAttribute("users", users);
         return "userMenu";
     }
 
     @GetMapping(value = "/users/add")
-    public String getAdd(Model model){
+    public String addUser(){
         logger.debug("Recieved request to show add user page");
-        model.addAttribute("userAttribute", new User());
         return "addUser";
     }
 
-    @PostMapping(value = "/users/add")
-    public String add(@ModelAttribute("userAttribute") User user){
+    @PostMapping(value = "/users/add", params = {"Save"})
+    public String addedUser(final User user, final BindingResult bindingResult, final ModelMap model){
         logger.debug("Recieved request to add new user");
-        userService.addUser(user);
+        if(bindingResult.hasErrors()){
+            return "addUser";
+        }
+        this.userService.addUser(user);
+        model.clear();
         return "addedUser";
     }
 
     @GetMapping(value = "/users/delete")
-    public String delete(@RequestParam(value = "userId") Long userId, Model model){
+    public String deleteUser(@RequestParam(value = "userId")final Long userId, final BindingResult bindingResult, final ModelMap model){
         logger.debug("Recieved request to delete user");
-        User user = userService.getUserById(userId);
-        userService.deleteUser(user);
-        model.addAttribute("user", user);
+        if(bindingResult.hasErrors()){
+            return "userMenu";
+        }
+        User user = this.userService.getUserById(userId);
+        this.userService.deleteUser(user);
+        model.clear();
         return "deletedUser";
     }
 
     @GetMapping(value = "/users/update")
-    public String getUpdate(@RequestParam(value = "userId") Long userId, Model model){
+    public String updateUser(){
         logger.debug("Recieved request to show update user page");
-        model.addAttribute("userAttribute", userService.getUserById(userId));
         return "updateUser";
     }
 
-    @PostMapping(value = "/users/update")
-    public String saveUpdate(@ModelAttribute("userAttribute") User user, @RequestParam(value = "userId") Long userId, Model model){
+    @PostMapping(value = "/users/update", params = {"Save"})
+    public String updatedUser(@RequestParam(value = "userId") final Long userId, final User user, final BindingResult bindingResult, final ModelMap model){
         logger.debug("Recieved request to update user");
+        if(bindingResult.hasErrors()){
+            return "updateUser";
+        }
         user.setUserId(userId);
-        userService.updateUser(user);
+        this.userService.updateUser(user);
         model.addAttribute("userId", userId);
         return "updatedUser";
     }

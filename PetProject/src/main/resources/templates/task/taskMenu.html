@@ -5,7 +5,7 @@
     <title>PetProject</title>
 </head>
 <body>
-<div class="taskMenu" th:unless="${#lists.isEmpty(tasks)}">
+<div class="taskMenu" th:unless="${#lists.isEmpty(taskAttribute)}">
     <h1>=====Task Menu=====</h1>
 
     <table style="border: 1px solid; width: 500px; text-align:center">
@@ -21,7 +21,7 @@
         </tr>
         </thead>
         <tbody>
-        <tr th:each = "task: ${tasks}">
+        <tr th:each = "task: ${taskAttribute}">
             <td th:text="${task.taskId}"/>
             <td th:text="${task.taskName}"/>
             <td th:text="${task.taskDescription}"/>
@@ -35,6 +35,6 @@
         </tbody>
     </table>
 </div>
-<span th:if="${#lists.isEmpty(tasks)}">There are currently no tasks in the list. <a href="addTaskUrl" th:href="@{http://localhost:8080/petproject/main/tasks/add}">Add</a> new task.</span>
+<span th:if="${#lists.isEmpty(taskAttribute)}">There are currently no tasks in the list. <a href="addTaskUrl" th:href="@{http://localhost:8080/petproject/main/tasks/add}">Add</a> new task.</span>
 </body>
 </html>

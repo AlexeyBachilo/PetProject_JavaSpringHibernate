@@ -5,7 +5,7 @@
         <title>PetProject</title>
     </head>
     <body>
-    <div class="userMenu" th:unless="${#lists.isEmpty(users)}">
+    <div class="userMenu" th:unless="${#lists.isEmpty(userAttribute)}">
         <h1>=====User Menu=====</h1>
 
         <table style="border: 1px solid; width: 500px; text-align:center">
@@ -20,7 +20,7 @@
                 </tr>
             </thead>
             <tbody>
-                   <tr th:each = "user: ${users}">
+                   <tr th:each = "user: ${userAttribute}">
                        <td th:text="${user.userId}"/>
                        <td th:text="${user.login}"/>
                        <td th:text="${user.firstName}"/>
@@ -45,6 +45,6 @@
             </tbody>
         </table>
     </div>
-    <span th:if="${#lists.isEmpty(users)}">There are currently no users in the list. <a href="addUserUrl" th:href="@{http://localhost:8080/petproject/main/users/add}">Add</a> new user.</span>
+    <span th:if="${#lists.isEmpty(userAttribute)}">There are currently no users in the list. <a href="addUserUrl" th:href="@{http://localhost:8080/petproject/main/users/add}">Add</a> new user.</span>
     </body>
 </html>
