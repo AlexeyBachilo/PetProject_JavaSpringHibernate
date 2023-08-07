@@ -1,6 +1,8 @@
 package com.petproject.controller;
 
+import com.petproject.entity.Task;
 import com.petproject.entity.User;
+import com.petproject.service.TaskService;
 import com.petproject.service.UserService;
 import org.apache.logging.log4j.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,12 +10,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
 import java.util.List;
 
 @Controller
-@EnableWebMvc
 @RequestMapping("/petproject/main")
 public class UserController {
 
@@ -22,9 +22,17 @@ public class UserController {
     @Autowired
     UserService userService;
 
+    @Autowired
+    TaskService taskService;
+
     @ModelAttribute("userAttribute")
     public List<User> populateUsers(){
         return this.userService.getAllUsers();
+    }
+
+    @ModelAttribute("userTaskAttribute")
+    public List<Task> populateUserTasks(User user){
+        return taskService.getTasksByUser(user);
     }
 
     @GetMapping(value = "/users")

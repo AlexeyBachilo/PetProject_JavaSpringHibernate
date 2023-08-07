@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=URF-8">
+        <title>PetProject</title>
+    </head>
+    <body>
+    <div class="userMenu" th:unless="${#lists.isEmpty(userAttribute)}">
+        <h1>=====User Menu=====</h1>
+
+        <table style="border: 1px solid; width: 500px; text-align:center">
+            <thead style="background:#fcf">
+                <tr>
+                    <th>Id</th>
+                    <th>Login</th>
+                    <th>First Name</th>
+                    <th>Last Name</th>
+                    <th>Points</th>
+                    <th>Tasks</th>
+                </tr>
+            </thead>
+            <tbody>
+                   <tr th:each = "user: ${userAttribute}">
+                       <td th:text="${user.userId}"/>
+                       <td th:text="${user.login}"/>
+                       <td th:text="${user.firstName}"/>
+                       <td th:text="${user.lastName}"/>
+                       <td th:text="${user.userPoints}"/>
+                       <td>
+                        <table>
+                            <tbody>
+                            <tr th:unless= "${#lists.isEmpty(userTaskAttribute)}" th:each = "task: ${userTaskAttribute}">
+                                <td th:text="${task.taskName}"/>
+                                <td th:text="${task.taskDescription}"/>
+                                <td th:text="${task.deadline}"/>
+                                <td th:text="#{|bool.${task.isCompleted}|}">Yes</td>
+                            </tr>
+                            <tr th:if="${#lists.isEmpty(userTaskAttribute)}">
+                                <td>There are currently no tasks assigned to this user.</td>
+                            </tr>
+                            </tbody>
+                        </table>
+                       </td>
+                    <td><a href="editUserUrl" th:href="@{/users/update}">Edit</a></td>
+                    <td><a href="deleteUserUrl" th:href="@{/users/delete}">Delete</a></td>
+                    <td><a href="addUserUrl" th:href="@{/users/add}">Add</a></td>
+                   </tr>
+            </tbody>
+        </table>
+    </div>
+    <span th:if="${#lists.isEmpty(userAttribute)}">There are currently no users in the list. <a href="addUserUrl" th:href="@{/users/add}">Add</a> new user.</span>
+    </body>
+</html>
