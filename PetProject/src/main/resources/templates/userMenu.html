@@ -41,13 +41,13 @@
                             </tbody>
                         </table>
                        </td>
-                    <td><a href="editUserUrl" th:href="@{/users/update}">Edit</a></td>
-                    <td><a href="deleteUserUrl" th:href="@{/users/delete}">Delete</a></td>
-                    <td><a href="addUserUrl" th:href="@{/users/add}">Add</a></td>
+                    <td><a href="editUserUrl" th:href="@{/petproject/main/users/update(id=${user.userId})}">Edit</a></td>
+                    <td><a href="deleteUserUrl" th:href="@{/petproject/main/users/delete(id=${user.userId})}">Delete</a></td>
+                    <td><a href="addUserUrl" th:href="@{/petproject/main/users/add}">Add</a></td>
                    </tr>
             </tbody>
         </table>
     </div>
-    <span th:if="${#lists.isEmpty(userAttribute)}">There are currently no users in the list. <a href="addUserUrl" th:href="@{/users/add}">Add</a> new user.</span>
+    <span th:if="${#lists.isEmpty(userAttribute)}">There are currently no users in the list. <a href="addUserUrl" th:href="@{/petproject/main/users/add}">Add</a> new user.</span>
     </body>
 </html>

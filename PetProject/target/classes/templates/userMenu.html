@@ -11,12 +11,12 @@
         <table style="border: 1px solid; width: 500px; text-align:center">
             <thead style="background:#fcf">
                 <tr>
-                    <th th:text="#{user.userId}">Id</th>
-                    <th th:text="#{user.login}">Login</th>
-                    <th th:text="#{user.firstName}">First Name</th>
-                    <th th:text="#{user.lastName}">Last Name</th>
-                    <th th:text="#{user.userPoints}">Points</th>
-                    <th th:text="#{user.tasks}">Tasks</th>
+                    <th>Id</th>
+                    <th>Login</th>
+                    <th>First Name</th>
+                    <th>Last Name</th>
+                    <th>Points</th>
+                    <th>Tasks</th>
                 </tr>
             </thead>
             <tbody>
@@ -41,13 +41,13 @@
                             </tbody>
                         </table>
                        </td>
-                    <td><a href="editUserUrl" th:href="@{/users/update}">Edit</a></td>
-                    <td><a href="deleteUserUrl" th:href="@{/users/delete}">Delete</a></td>
-                    <td><a href="addUserUrl" th:href="@{/users/add}">Add</a></td>
+                    <td><a href="editUserUrl" th:href="@{/petproject/main/users/update(userId=${user.userId})}">Edit</a></td>
+                    <td><a href="deleteUserUrl" th:href="@{/petproject/main/users/delete(userId=${user.userId})}">Delete</a></td>
+                    <td><a href="addUserUrl" th:href="@{/petproject/main/users/add}">Add</a></td>
                    </tr>
             </tbody>
         </table>
     </div>
-    <span th:if="${#lists.isEmpty(userAttribute)}">There are currently no users in the list. <a href="addUserUrl" th:href="@{/users/add}">Add</a> new user.</span>
+    <span th:if="${#lists.isEmpty(userAttribute)}">There are currently no users in the list. <a href="addUserUrl" th:href="@{/petproject/main/users/add}">Add</a> new user.</span>
     </body>
 </html>

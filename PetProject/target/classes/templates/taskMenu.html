@@ -11,13 +11,13 @@
     <table style="border: 1px solid; width: 500px; text-align:center">
         <thead style="background:#fcf">
         <tr>
-            <th th:text="#{task.taskId}">Id</th>
-            <th th:text="#{task.taskName}">Task Name</th>
-            <th th:text="#{task.taskDescription}">Task Description</th>
-            <th th:text="#{task.deadline}">Deadline</th>
-            <th th:text="#{task.taskPoints}">Points</th>
-            <th th:text="#{task.isCompleted}">Completed</th>
-            <th th:text="#{task.user}">Assigned User</th>
+            <th>Id</th>
+            <th>Task Name</th>
+            <th>Task Description</th>
+            <th>Deadline</th>
+            <th>Points</th>
+            <th>Completed</th>
+            <th>Assigned User</th>
         </tr>
         </thead>
         <tbody>
@@ -28,13 +28,13 @@
             <td th:text="${task.deadline}"/>
             <td th:text="#{|bool.${task.isCompleted}|}">Yes</td>
             <td th:text="${task.user.login}"/>
-            <td><a href="editTaskUrl" th:href="@{http://localhost:8080/petproject/main/tasks/update">Edit</a></td>
-            <td><a href="deleteTaskUrl" th:href="@{http://localhost:8080/petproject/main/tasks/delete}">Delete</a></td>
-            <td><a href="addTaskUrl" th:href="@{http://localhost:8080/petproject/main/tasks/add}">Add</a></td>
+            <td><a href="editTaskUrl" th:href="@{/petproject/main/tasks/update}">Edit</a></td>
+            <td><a href="deleteTaskUrl" th:href="@{/petproject/main/tasks/delete}">Delete</a></td>
+            <td><a href="addTaskUrl" th:href="@{/petproject/main/tasks/add}">Add</a></td>
         </tr>
         </tbody>
     </table>
 </div>
-<span th:if="${#lists.isEmpty(taskAttribute)}">There are currently no tasks in the list. <a href="addTaskUrl" th:href="@{http://localhost:8080/petproject/main/tasks/add}">Add</a> new task.</span>
+<span th:if="${#lists.isEmpty(taskAttribute)}">There are currently no tasks in the list. <a href="addTaskUrl" th:href="@{/petproject/main/tasks/add}">Add</a> new task.</span>
 </body>
 </html>
