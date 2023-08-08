@@ -60,10 +60,10 @@ public class UserService {
 
     public void completeTask(Task task){
         logger.debug("Marking task as completed");
-        task.setisCompleted(!task.getisCompleted());
+        task.setCompleted(!task.getCompleted());
         User user = getUserByTask(task);
         logger.debug("Adding taskpoint to user");
-        user.setUserPoints(task.getisCompleted() ? user.getUserPoints() + task.getTaskPoints() : user.getUserPoints() - task.getTaskPoints());
+        user.setUserPoints(task.getCompleted() ? user.getUserPoints() + task.getTaskPoints() : user.getUserPoints() - task.getTaskPoints());
         taskService.updateTask(task);
         updateUser(user);
     }

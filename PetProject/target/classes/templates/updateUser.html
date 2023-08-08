@@ -6,23 +6,19 @@
     </head>
     <body>
         <h1>=====Update User=====</h1>
-        <form action="@" th:object="${userAttribute}" method="post" th:action="@{/petproject/main/users/update?id=${userAttribute.userId}}">
+        <form action="@" th:object="${UDUserAttribute}" method="post" th:action="@{/petproject/main/users/update?id=*{userId}}">
             <table>
                 <tr>
-                    <td><label>Id:</label></td>
-                    <td><input type="text" th:field="*{userId}"/></td>
-                </tr>
-                <tr>
                     <td><label>Login:</label></td>
-                    <td><input type="text" th:field="*{login}"/></td>
+                    <td><input type="text" th:field="*{login}" th:text="${login}"/></td>
                 </tr>
                 <tr>
                     <td><label>First Name:</label></td>
-                    <td><input type="text" th:field="*{firstName}"/></td>
+                    <td><input type="text" th:field="*{firstName}" th:text="${firstName}"/></td>
                 </tr>
                 <tr>
                     <td><label>Last Name:</label></td>
-                    <td><input type="text" th:field="*{lastName}"/></td>
+                    <td><input type="text" th:field="*{lastName}" th:text="${lastName}"/></td>
                 </tr>
             </table>
 

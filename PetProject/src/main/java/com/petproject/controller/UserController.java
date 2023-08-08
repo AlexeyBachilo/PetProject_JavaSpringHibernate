@@ -22,17 +22,19 @@ public class UserController {
     @Autowired
     UserService userService;
 
-    @Autowired
-    TaskService taskService;
-
-    @ModelAttribute("userAttribute")
+    @ModelAttribute("usersAttribute")
     public List<User> populateUsers(){
         return this.userService.getAllUsers();
     }
 
-    @ModelAttribute("userTaskAttribute")
-    public List<Task> populateUserTasks(User user){
-        return taskService.getTasksByUser(user);
+    @ModelAttribute("newUserAttribute")
+    public User newUser(){
+        return new User();
+    }
+
+    @ModelAttribute("UDUserAttribute")
+    public User UDUser(@RequestParam(value = "id", required = false)Long id){
+        return userService.getUserById(id);
     }
 
     @GetMapping(value = "/users")
@@ -47,7 +49,7 @@ public class UserController {
         return "addUser";
     }
 
-    @PostMapping(value = "/users/add", params = {"Save"})
+    @PostMapping(value = "/users/add")
     public String addedUser(final User user, final BindingResult bindingResult, final ModelMap model){
         logger.debug("Recieved request to add new user");
         if(bindingResult.hasErrors()){
@@ -76,8 +78,8 @@ public class UserController {
         return "updateUser";
     }
 
-    @PostMapping(value = "/users/update", params = {"Save"})
-    public String updatedUser(@RequestParam(value = "userId") final Long userId, final User user, final BindingResult bindingResult, final ModelMap model){
+    @PostMapping(value = "/users/update")
+    public String updatedUser(@RequestParam(value = "id") final Long userId, final User user, final BindingResult bindingResult, final ModelMap model){
         logger.debug("Recieved request to update user");
         if(bindingResult.hasErrors()){
             return "updateUser";

@@ -18,7 +18,7 @@ public class Task implements Serializable {
     @Column(name = "taskdescription")
     private String taskDescription;
     @Column(name = "complete")
-    private boolean isCompleted;
+    private boolean completed;
     @Column(name = "taskpoints")
     private int taskPoints = 0;
     @Column(name = "deadline")
@@ -59,12 +59,12 @@ public class Task implements Serializable {
         this.user = user;
     }
 
-    public boolean getisCompleted() {
-        return isCompleted;
+    public boolean getCompleted() {
+        return completed;
     }
 
-    public void setisCompleted(boolean completed) {
-        isCompleted = completed;
+    public void setCompleted(boolean completed) {
+        this.completed = completed;
     }
 
     public int getTaskPoints() {
@@ -88,18 +88,18 @@ public class Task implements Serializable {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Task task = (Task) o;
-        return isCompleted == task.isCompleted && taskPoints == task.taskPoints && Objects.equals(taskId, task.taskId) && Objects.equals(taskName, task.taskName) && Objects.equals(taskDescription, task.taskDescription) && Objects.equals(user, task.user) && Objects.equals(deadline, task.deadline);
+        return completed == task.completed && taskPoints == task.taskPoints && Objects.equals(taskId, task.taskId) && Objects.equals(taskName, task.taskName) && Objects.equals(taskDescription, task.taskDescription) && Objects.equals(user, task.user) && Objects.equals(deadline, task.deadline);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(taskId, taskName, taskDescription, user, isCompleted, taskPoints, deadline);
+        return Objects.hash(taskId, taskName, taskDescription, user, completed, taskPoints, deadline);
     }
 
     @Override
     public String toString(){
         return "Task Id: " + getTaskId() + "\nTask Name: " + getTaskName() + "\nTask Description: " + getTaskDescription()
-                +"\nTask Points: " + getTaskPoints() + "\nIs Completed: " + ((getisCompleted()) ? "Yes" : "No")
+                +"\nTask Points: " + getTaskPoints() + "\nIs Completed: " + ((getCompleted()) ? "Yes" : "No")
                 +"\nDeadline: " + getDeadline();
     }
 }

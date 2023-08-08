@@ -5,28 +5,11 @@
     <title>PetProject</title>
 </head>
 <body>
-<h1>=====Update Task=====</h1>
-<form action="@" th:object="${taskAttribute}" method="post" th:action="@{/petproject/main/tasks/add">
-    <table>
-        <tr>
-            <td><label>Name:</label></td>
-            <td><input type="text" th:field="*{taskName}"/></td>
-        </tr>
-        <tr>
-            <td><label>Description:</label></td>
-            <td><input type="text" th:field="*{taskDescription}"/></td>
-        </tr>
-        <tr>
-            <td><label>Deadline:</label></td>
-            <td><input type="text" th:field="*{deadline}"/></td>
-        </tr>
-        <tr>
-            <td><label>Points:</label></td>
-            <td><input type="text" th:field="*{taskPoints}"/></td>
-        </tr>
-    </table>
+<h1>=====Task Menu=====</h1>
+<p>You have added a new task</p>
 
-    <input type="submit" value="Save"/>
-</form>
+<p> Return to <a href="mainUrl" th:href="@{http://localhost:8080/petproject/main}">Main Menu</a></p>
+
+<p> Return to <a href="userMenuUrl" th:href="@{http://localhost:8080/petproject/main/tasks}">Task Menu</a></p>
 </body>
 </html>

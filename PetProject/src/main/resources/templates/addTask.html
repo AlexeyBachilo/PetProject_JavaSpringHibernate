@@ -6,19 +6,23 @@
 </head>
 <body>
 <h1>=====Add New Task=====</h1>
-<form action="@" th:object="${taskAttribute}" method="post" th:action="@{/petproject/main/tasks/add}">
+<form action="@" th:object="${taskAttribute}" method="post" th:action="@{/petproject/main/tasks/add">
     <table>
         <tr>
             <td><label>Name:</label></td>
-            <td><input type="text" th:field="*{login}"/></td>
+            <td><input type="text" th:field="*{taskName}"/></td>
         </tr>
         <tr>
-            <td><label>First Name:</label></td>
-            <td><input type="text" th:field="*{firstName}"/></td>
+            <td><label>Description:</label></td>
+            <td><input type="text" th:field="*{taskDescription}"/></td>
         </tr>
         <tr>
-            <td><label>Last Name:</label></td>
-            <td><input type="text" th:field="*{lastName}"/></td>
+            <td><label>Deadline:</label></td>
+            <td><input type="text" th:field="*{deadline}"/></td>
+        </tr>
+        <tr>
+            <td><label>Points:</label></td>
+            <td><input type="text" th:field="*{taskPoints}"/></td>
         </tr>
     </table>
 

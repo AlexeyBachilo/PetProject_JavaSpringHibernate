@@ -5,10 +5,9 @@
         <title>PetProject</title>
     </head>
     <body>
-    <div class="userMenu" th:unless="${#lists.isEmpty(userAttribute)}">
+    <div class="userMenu" th:unless="${#lists.isEmpty(usersAttribute)}">
         <h1>=====User Menu=====</h1>
-
-        <table style="border: 1px solid; width: 500px; text-align:center">
+        <table style="border: 1px solid black; border-collapse: collapse; width: 500px; text-align:center">
             <thead style="background:#fcf">
                 <tr>
                     <th>Id</th>
@@ -16,26 +15,38 @@
                     <th>First Name</th>
                     <th>Last Name</th>
                     <th>Points</th>
-                    <th>Tasks</th>
+                    <th>
+                        <table>
+                            <tr>
+                                Tasks
+                            </tr>
+                            <tr>
+                                <td>Task Name</td>
+                                <td>Task Description</td>
+                                <td>Deadline</td>
+                                <td>Is Completed</td>
+                            </tr>
+                        </table>
+                    </th>
                 </tr>
             </thead>
             <tbody>
-                   <tr th:each = "user: ${userAttribute}">
+                   <tr th:each = "user: ${usersAttribute}">
                        <td th:text="${user.userId}"/>
                        <td th:text="${user.login}"/>
                        <td th:text="${user.firstName}"/>
                        <td th:text="${user.lastName}"/>
                        <td th:text="${user.userPoints}"/>
                        <td>
-                        <table>
+                        <table style="border: 1px solid black; border-collapse: collapse; width: 500px; text-align:center">
                             <tbody>
-                            <tr th:unless= "${#lists.isEmpty(userTaskAttribute)}" th:each = "task: ${userTaskAttribute}">
+                            <tr th:unless= "${#lists.isEmpty(user.tasks)}" th:each = "task: ${user.tasks}">
                                 <td th:text="${task.taskName}"/>
                                 <td th:text="${task.taskDescription}"/>
                                 <td th:text="${task.deadline}"/>
-                                <td th:text="#{|bool.${task.isCompleted}|}">Yes</td>
+                                <td th:text="${task.completed} ? 'Yes' : 'No'"/>
                             </tr>
-                            <tr th:if="${#lists.isEmpty(userTaskAttribute)}">
+                            <tr th:if="${#lists.isEmpty(user.tasks)}">
                                 <td>There are currently no tasks assigned to this user.</td>
                             </tr>
                             </tbody>
@@ -48,6 +59,6 @@
             </tbody>
         </table>
     </div>
-    <span th:if="${#lists.isEmpty(userAttribute)}">There are currently no users in the list. <a href="addUserUrl" th:href="@{/petproject/main/users/add}">Add</a> new user.</span>
+    <span th:if="${#lists.isEmpty(usersAttribute)}">There are currently no users in the list. <a href="addUserUrl" th:href="@{/petproject/main/users/add}">Add</a> new user.</span>
     </body>
 </html>

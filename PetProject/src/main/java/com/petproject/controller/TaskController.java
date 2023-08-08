@@ -20,7 +20,7 @@ public class TaskController {
     @Autowired
     TaskService taskService;
 
-    @ModelAttribute("taskAttribute")
+    @ModelAttribute("tasksAttribute")
     public List<Task> populateTasks(){
         return this.taskService.getAllTasks();
     }
@@ -28,14 +28,12 @@ public class TaskController {
     @GetMapping(value = "/tasks")
     public String getTasks(){
         logger.debug("Recieved request to show all tasks");
-        populateTasks();
         return "taskMenu";
     }
 
     @GetMapping(value = "/tasks/add")
     public String addTask(){
         logger.debug("Recieved request to show add tasl page");
-        populateTasks();
         return "addTask";
     }
 
@@ -64,7 +62,6 @@ public class TaskController {
     @GetMapping(value = "/tasks/update")
     public String updateTask(){
         logger.debug("Recieved request to show update task page");
-        populateTasks();
         return "updateTask";
     }
 
