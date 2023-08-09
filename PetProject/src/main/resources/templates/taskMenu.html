@@ -26,15 +26,18 @@
             <td th:text="${task.taskName}"/>
             <td th:text="${task.taskDescription}"/>
             <td th:text="${task.deadline}"/>
+            <td th:text="${task.taskPoints}"/>
             <td th:text="${task.completed} ? 'Yes' : 'No'">Yes</td>
             <td th:text="${task.user.login}"/>
-            <td><a href="editTaskUrl" th:href="@{/petproject/main/tasks/update}">Edit</a></td>
-            <td><a href="deleteTaskUrl" th:href="@{/petproject/main/tasks/delete}">Delete</a></td>
-            <td><a href="addTaskUrl" th:href="@{/petproject/main/tasks/add}">Add</a></td>
+            <td><a href="editTaskUrl" th:href="@{/petproject/main/tasks/update(id=${task.taskId})}">Edit</a></td>
+            <td><a href="deleteTaskUrl" th:href="@{/petproject/main/tasks/delete(id=${task.taskId})}">Delete</a></td>
+            <td><a href="addTaskUrl" th:href="@{/petproject/main/tasks/add(userId=${task.user.userId})}">Add</a></td>
         </tr>
         </tbody>
     </table>
 </div>
 <span th:if="${#lists.isEmpty(tasksAttribute)}">There are currently no tasks in the list. <a href="addTaskUrl" th:href="@{/petproject/main/tasks/add}">Add</a> new task.</span>
+<p> Return to <a href="mainUrl" th:href="@{http://localhost:8080/petproject/main}">Main Menu</a></p>
+
 </body>
 </html>

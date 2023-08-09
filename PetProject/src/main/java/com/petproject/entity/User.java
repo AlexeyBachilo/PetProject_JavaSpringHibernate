@@ -1,9 +1,7 @@
 package com.petproject.entity;
 
 
-import com.petproject.service.TaskService;
 import jakarta.persistence.*;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import java.io.Serializable;
 import java.util.List;

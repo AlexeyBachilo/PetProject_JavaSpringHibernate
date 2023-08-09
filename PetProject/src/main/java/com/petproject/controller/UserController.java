@@ -1,8 +1,6 @@
 package com.petproject.controller;
 
-import com.petproject.entity.Task;
 import com.petproject.entity.User;
-import com.petproject.service.TaskService;
 import com.petproject.service.UserService;
 import org.apache.logging.log4j.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,7 +31,7 @@ public class UserController {
     }
 
     @ModelAttribute("UDUserAttribute")
-    public User UDUser(@RequestParam(value = "id", required = false)Long id){
+    public User UDUser(@RequestParam(value = "id", required = false, defaultValue = "1")Long id){
         return userService.getUserById(id);
     }
 
@@ -61,11 +59,8 @@ public class UserController {
     }
 
     @GetMapping(value = "/users/delete")
-    public String deleteUser(@RequestParam(value = "userId")final Long userId, final BindingResult bindingResult, final ModelMap model){
+    public String deleteUser(@RequestParam(value = "id")final Long userId, final ModelMap model){
         logger.debug("Recieved request to delete user");
-        if(bindingResult.hasErrors()){
-            return "userMenu";
-        }
         User user = this.userService.getUserById(userId);
         this.userService.deleteUser(user);
         model.clear();

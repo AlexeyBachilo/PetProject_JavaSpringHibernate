@@ -47,7 +47,7 @@
                                 <td th:text="${task.completed} ? 'Yes' : 'No'"/>
                             </tr>
                             <tr th:if="${#lists.isEmpty(user.tasks)}">
-                                <td>There are currently no tasks assigned to this user.</td>
+                                <td>There are currently no tasks assigned to this user. <a href="addTaskUrl" th:href="@{/petproject/main/tasks/add(userId=${user.userId})}">Add one.</a></td>
                             </tr>
                             </tbody>
                         </table>
@@ -60,5 +60,6 @@
         </table>
     </div>
     <span th:if="${#lists.isEmpty(usersAttribute)}">There are currently no users in the list. <a href="addUserUrl" th:href="@{/petproject/main/users/add}">Add</a> new user.</span>
-    </body>
+    <p> Return to <a href="mainUrl" th:href="@{http://localhost:8080/petproject/main}">Main Menu</a></p>
+  </body>
 </html>
