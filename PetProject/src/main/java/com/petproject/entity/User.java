@@ -1,8 +1,8 @@
 package com.petproject.entity;
 
 
-import com.petproject.service.TaskService;
 import jakarta.persistence.*;
+
 import java.io.Serializable;
 import java.util.List;
 import java.util.Objects;
@@ -67,10 +67,6 @@ public class User implements Serializable {
     }
 
     public List<Task> getTasks() {
-        if(tasks.isEmpty()){
-            TaskService taskService = new TaskService();
-            tasks = taskService.getTasksByUser(this);
-        }
         return tasks;
     }
 

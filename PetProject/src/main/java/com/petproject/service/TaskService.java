@@ -22,6 +22,7 @@ public class TaskService {
     @Lazy
     UserService userService;
 
+
     protected static Logger logger = LogManager.getLogger("TaskServiceLogger");
 
     public void addTask(Task task) {
@@ -43,7 +44,7 @@ public class TaskService {
 
     public List<Task> getTasksByUser (User user) {
         logger.debug("Getting all tasks by User");
-        return taskRepository.getTasksByUser(user.getUserId());
+        return taskRepository.getTasksByUser(user);
     }
 
     public List<Task> getAllTasks () {

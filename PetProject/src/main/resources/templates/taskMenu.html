@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=URF-8">
+    <title>PetProject</title>
+</head>
+<body>
+<div class="taskMenu" th:unless="${#lists.isEmpty(tasksAttribute)}">
+    <h1>=====Task Menu=====</h1>
+
+    <table style="border: 1px solid; width: 500px; text-align:center">
+        <thead style="background:#fcf">
+        <tr>
+            <th>Id</th>
+            <th>Task Name</th>
+            <th>Task Description</th>
+            <th>Deadline</th>
+            <th>Points</th>
+            <th>Completed</th>
+            <th>Assigned User</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each = "task: ${tasksAttribute}">
+            <td th:text="${task.taskId}"/>
+            <td th:text="${task.taskName}"/>
+            <td th:text="${task.taskDescription}"/>
+            <td th:text="${task.deadline}"/>
+            <td th:text="${task.taskPoints}"/>
+            <td th:text="${task.completed} ? 'Yes' : 'No'">Yes</td>
+            <td th:text="${task.user.login}"/>
+            <td><a href="editTaskUrl" th:href="@{/petproject/main/tasks/update(id=${task.taskId})}">Edit</a></td>
+            <td><a href="deleteTaskUrl" th:href="@{/petproject/main/tasks/delete(id=${task.taskId})}">Delete</a></td>
+            <td><a href="addTaskUrl" th:href="@{/petproject/main/tasks/add(userId=${task.user.userId})}">Add</a></td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+<span th:if="${#lists.isEmpty(tasksAttribute)}">There are currently no tasks in the list. <a href="addTaskUrl" th:href="@{/petproject/main/tasks/add}">Add</a> new task.</span>
+<p> Return to <a href="mainUrl" th:href="@{http://localhost:8080/petproject/main}">Main Menu</a></p>
+
+</body>
+</html>
