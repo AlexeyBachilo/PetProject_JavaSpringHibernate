@@ -12,25 +12,25 @@
             <td><label>Assigned User:</label></td>
             <td>
                 <select th:field="*{user}">
-                    <option th:each="user: ${options}" th:value="${user}" th:text="${user.login}" selected="${user.userId == *{user.userId}}"></option>
+                    <option th:each="user: ${options}" th:value="${user.userId}" th:text="${user.login}" selected="${${user.userId} == *{user.userId}}"></option>
                 </select>
             </td>
         </tr>
         <tr>
             <td><label>Name:</label></td>
-            <td><input type="text" th:field="*{taskName}"/></td>
+            <td><input type="text" th:field="*{taskName}" th:text="${taskName}"/></td>
         </tr>
         <tr>
             <td><label>Description:</label></td>
-            <td><input type="text" th:field="*{taskDescription}"/></td>
+            <td><input type="text" th:field="*{taskDescription}" th:text="${taskDescription}"/></td>
         </tr>
         <tr>
             <td><label>Deadline:</label></td>
-            <td><input type="date" th:field="${#temporals.format(*{deadline}, 'dd-MM-yyyy')}"/></td>
+            <td><input type="date" th:field="*{deadline}" th:value="${#temporals.format(deadline, 'dd-MM-yyyy')}"/></td>
         </tr>
         <tr>
             <td><label>Points:</label></td>
-            <td><input type="text" th:field="*{taskPoints}"/></td>
+            <td><input type="text" th:field="*{taskPoints}" th:text="${taskPoints}"/></td>
         </tr>
     </table>
 

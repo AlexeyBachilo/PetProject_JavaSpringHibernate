@@ -38,12 +38,12 @@ public class TaskController {
         }
         return newTask;
     }
-
+//
     @ModelAttribute("UDTaskAttribute")
-    public Task UDTask(@RequestParam(value = "taskId", required = false, defaultValue = "1")Long taskId){
+    public Task UDTask(@RequestParam(value = "id", required = false, defaultValue = "1")Long taskId){
         return taskService.getTaskById(taskId);
     }
-
+//
     @GetMapping(value = "/tasks")
     public String getTasks(){
         logger.debug("Recieved request to show all tasks");
@@ -67,9 +67,9 @@ public class TaskController {
         this.taskService.addTask(task);
         return "addedTask";
     }
-    //TODO Fix addTask
+
     @GetMapping(value = "/tasks/delete")
-    public String deleteTask(final Long taskId, final ModelMap model){
+    public String deleteTask(@RequestParam(value = "id") final Long taskId, final ModelMap model){
         logger.debug("Recieved request to delete task");
         Task task = this.taskService.getTaskById(taskId);
         this.taskService.deleteTask(task);
@@ -78,20 +78,22 @@ public class TaskController {
     }
 
     @GetMapping(value = "/tasks/update")
-    public String updateTask(){
+    public String updateTask(Model model){
         logger.debug("Recieved request to show update task page");
+        List<User> options = userService.getAllUsers();
+        model.addAttribute("options",options);
         return "updateTask";
     }
 
     @PostMapping(value = "/tasks/update")
-    public String updatedTask(final Task task, @RequestParam(value = "taskId")final Long taskId, final BindingResult bindingResult, final ModelMap model){
+    public String updatedTask( @RequestParam(value = "id")final Long taskId, final Task task, final BindingResult bindingResult, final ModelMap model){
         logger.debug("Recieved request to update task");
         if(bindingResult.hasErrors()){
             return "updateTask";
         }
         task.setTaskId(taskId);
         this.taskService.updateTask(task);
-        model.clear();
+        model.addAttribute("taskId", taskId);
         return "updatedTask";
     }
 }
