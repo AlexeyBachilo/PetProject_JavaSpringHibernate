@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @Controller
-@RequestMapping("/petproject/main")
+@RequestMapping("/petproject/admin/main")
 public class UserController {
 
     protected static Logger logger = LogManager.getLogger("UserControllerLogger");
@@ -25,11 +25,6 @@ public class UserController {
         return this.userService.getAllUsers();
     }
 
-    @ModelAttribute("newUserAttribute")
-    public User newUser(){
-        return new User();
-    }
-
     @ModelAttribute("UDUserAttribute")
     public User UDUser(@RequestParam(value = "id", required = false, defaultValue = "1")Long id){
         return userService.getUserById(id);
@@ -39,23 +34,6 @@ public class UserController {
     public String getUsers(){
         logger.debug("Recieved request to show all users");
         return "userMenu";
-    }
-
-    @GetMapping(value = "/users/add")
-    public String addUser(){
-        logger.debug("Recieved request to show add user page");
-        return "addUser";
-    }
-
-    @PostMapping(value = "/users/add")
-    public String addedUser(final User user, final BindingResult bindingResult, final ModelMap model){
-        logger.debug("Recieved request to add new user");
-        if(bindingResult.hasErrors()){
-            return "addUser";
-        }
-        this.userService.addUser(user);
-        model.clear();
-        return "addedUser";
     }
 
     @GetMapping(value = "/users/delete")

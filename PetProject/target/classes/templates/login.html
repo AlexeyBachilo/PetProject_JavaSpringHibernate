@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=URF-8">
+	<title>PetProject</title>
+</head>
+<body>
+	<h1>=====Login=====</h1>
+	<div th:if="${param.error}">
+		<div class="alert alert-danger">Invalid Email Or Password</div>
+	</div>
+	<div th:if="${param.logout}">
+		<div class="alert alert-success">You have been logged out.</div>
+	</div>
+	<form action="@" th:object="userAttribute" method="post" th:action="@{petproject/login}">
+		<table>
+			<tr>
+				<td><label>Email:</label></td>
+				<td><input type="text" th:field="*{email}"/></td>
+			</tr>
+			<tr>
+				<td><label>Password:</label></td>
+				<td><input type="password" th:field="*{password}"/></td>
+			</tr>
+		</table>
+
+		<input type="submit" value="Log In"/>
+		<br>
+		<p>Don't have an account? <a href="registerUrl" th:href="@{petproject/register}">Create one!</a></p>
+	</form>
+</body>
+</html>

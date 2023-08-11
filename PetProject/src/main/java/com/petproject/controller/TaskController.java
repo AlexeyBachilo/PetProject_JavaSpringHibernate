@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @Controller
-@RequestMapping("/petproject/main")
+@RequestMapping("/petproject")
 public class TaskController {
 
     protected static Logger logger = LogManager.getLogger("TaskControllerLogger");
@@ -25,11 +25,6 @@ public class TaskController {
     @Autowired
     TaskService taskService;
 
-    @ModelAttribute("tasksAttribute")
-    public List<Task> populateTasks(){
-        return this.taskService.getAllTasks();
-    }
-
     @ModelAttribute("newTaskAttribute")
     public Task newTask(@RequestParam(value = "userId", required = false, defaultValue = "1")Long userId){
         Task newTask = new Task();
@@ -38,23 +33,43 @@ public class TaskController {
         }
         return newTask;
     }
-//
+
     @ModelAttribute("UDTaskAttribute")
     public Task UDTask(@RequestParam(value = "id", required = false, defaultValue = "1")Long taskId){
         return taskService.getTaskById(taskId);
     }
-//
-    @GetMapping(value = "/tasks")
-    public String getTasks(){
-        logger.debug("Recieved request to show all tasks");
+
+    @ModelAttribute("userTaskAttribute")
+    public List<Task> userTasks(@RequestParam(value = "user")User user){
+        return taskService.getTasksByUser(user);
+    }
+
+    @GetMapping(value = "/admin/tasks")
+    public String getTasks(Model model){
+        logger.debug("ADMIN: Recieved request to show all tasks");
+        model.addAttribute("tasksAttribute", this.taskService.getAllTasks());
         return "taskMenu";
     }
 
-    @GetMapping(value = "/tasks/add")
+    @GetMapping(value = "/user/tasks")
+    public String getUserTasks(@RequestParam("user")User user, Model model){
+        logger.debug("USER: Recieved request to show tasks");
+        model.addAttribute("tasksAttribute", this.taskService.getTasksByUser(user));
+        return "taskMenu";
+    }
+
+    @GetMapping(value = "/admin/tasks/add")
     public String addTask(Model model){
-        logger.debug("Recieved request to show add task page");
+        logger.debug("ADMIN: Recieved request to show add task page");
         List<User> options = userService.getAllUsers();
         model.addAttribute("options",options);
+        return "addTask";
+    }
+
+    @GetMapping(value = "/user/tasks/add")
+    public String addUserTask(@RequestParam("user")User user, Model model){
+        logger.debug("USER: Recieved request to show add task page");
+        model.addAttribute("options", user);
         return "addTask";
     }
 
@@ -77,11 +92,18 @@ public class TaskController {
         return "deletedTask";
     }
 
-    @GetMapping(value = "/tasks/update")
+    @GetMapping(value = "/admin/tasks/update")
     public String updateTask(Model model){
-        logger.debug("Recieved request to show update task page");
+        logger.debug("ADMIN: Recieved request to show update task page");
         List<User> options = userService.getAllUsers();
         model.addAttribute("options",options);
+        return "updateTask";
+    }
+
+    @GetMapping(value = "/user/tasks/update")
+    public String updateUserTask(@RequestParam("user")User user, Model model){
+        logger.debug("USER: Recieved request to update task");
+        model.addAttribute("options", user);
         return "updateTask";
     }
 

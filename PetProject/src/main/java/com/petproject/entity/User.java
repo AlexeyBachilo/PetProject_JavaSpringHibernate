@@ -2,20 +2,32 @@ package com.petproject.entity;
 
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import java.io.Serializable;
+import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
+import java.util.Set;
 
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
 @Entity
 @Table(name = "users")
-public class User implements Serializable {
+public class User implements Serializable, UserDetails {
     @Id
     @SequenceGenerator(name = "user_seq", sequenceName = "user_user_id_seq", allocationSize = 0)
     @GeneratedValue(strategy = GenerationType.IDENTITY, generator = "user_seq")
     @Column(name = "userid", unique = true, nullable = false)
     private Long userId;
-    @Column(name = "login")
+    @Column(name = "login", nullable = false)
     private String login;
     @Column(name = "firstname")
     private String firstName;
@@ -23,73 +35,62 @@ public class User implements Serializable {
     private String lastName;
     @Column(name = "userpoints")
     private int userPoints = 0;
+    @Column(name = "email", nullable = false, unique = true)
+    private String email;
+    @Column(name = "password", nullable = false)
+    private String password;
+    @Transient
+    private String passwordConfirm;
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<Task> tasks = null;
-
-    public Long getUserId() {
-        return userId;
-    }
-
-    public void setUserId(Long userId) {
-        this.userId = userId;
-    }
-
-    public String getLogin() {
-        return login;
-    }
-
-    public void setLogin(String login) {
-        this.login = login;
-    }
-
-    public String getFirstName() {
-        return firstName;
-    }
-
-    public void setFirstName(String firstname) {
-        this.firstName = firstname;
-    }
-
-    public String getLastName() {
-        return lastName;
-    }
-
-    public void setLastName(String lastname) {
-        this.lastName = lastname;
-    }
-
-    public int getUserPoints() {
-        return userPoints;
-    }
-
-    public void setUserPoints(int userpoints) {
-        this.userPoints = userpoints;
-    }
-
-    public List<Task> getTasks() {
-        return tasks;
-    }
-
-    public void setTasks(List<Task> tasks) {
-        this.tasks = tasks;
-    }
+    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @JoinTable(
+            name = "roles",
+            @JoinColumns({
+                    @JoinColumn(name = "granteduserid", referencedColumnName = "userId"),
+                    @JoinColumn(name = "roleid", referencedColumnName = "roleId")}))
+    private Set<Role> roles;
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         User user = (User) o;
-        return userPoints == user.userPoints && Objects.equals(userId, user.userId) && Objects.equals(login, user.login) && Objects.equals(firstName, user.firstName) && Objects.equals(lastName, user.lastName) && Objects.equals(tasks, user.tasks);
+        return userPoints == user.userPoints && Objects.equals(userId, user.userId) && Objects.equals(login, user.login) && Objects.equals(firstName, user.firstName) && Objects.equals(lastName, user.lastName) && Objects.equals(email, user.email) && Objects.equals(password, user.password) && Objects.equals(passwordConfirm, user.passwordConfirm) && Objects.equals(tasks, user.tasks) && Objects.equals(roles, user.roles);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(userId, login, firstName, lastName, userPoints, tasks);
+        return Objects.hash(userId, login, firstName, lastName, userPoints, email, password, passwordConfirm, tasks, roles);
     }
 
     @Override
-    public String toString(){
-        return "User Id: " + getUserId() + "\nUser Login: " + getLogin() + "\nFirst Name: " + getFirstName()
-                +"\nLast Name: " + getLastName() + "\nCurrent Points: " + getUserPoints();
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return getRoles();
+    }
+
+    @Override
+    public String getUsername() {
+        return email;
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return true;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return true;
     }
 }

@@ -6,7 +6,7 @@
 </head>
 <body>
 <h1>=====Add New Task=====</h1>
-<form action="@" th:object="${newTaskAttribute}" method="post" th:action="@{/petproject/main/tasks/add}">
+<form action="@" th:object="${newTaskAttribute}" method="post" th:action="@{/petproject/**/tasks/add}">
     <table>
         <tr>
             <td><label>Assigned User:</label></td>
@@ -36,8 +36,6 @@
 
     <input type="submit" value="Save"/>
 </form>
-<p> Return to <a href="mainUrl" th:href="@{http://localhost:8080/petproject/main}">Main Menu</a></p>
-
-<p> Return to <a href="userMenuUrl" th:href="@{http://localhost:8080/petproject/main/tasks}">Task Menu</a></p>
+<p> Return to <a href="userMenuUrl" th:href="@{http://localhost:8080/petproject/**/tasks}">Task Menu</a></p>
 </body>
 </html>
