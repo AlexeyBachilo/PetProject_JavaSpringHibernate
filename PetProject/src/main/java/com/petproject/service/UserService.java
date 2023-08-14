@@ -27,8 +27,9 @@ import java.util.stream.Collectors;
 
 @Service
 @Transactional(propagation = Propagation.REQUIRES_NEW)
-public class UserService implements UserDetailsService {
+public class UserService {
     @Autowired
+    @Lazy
     BCryptPasswordEncoder passwordEncoder;
     @Autowired
     UserRepository userRepository;
@@ -82,7 +83,7 @@ public class UserService implements UserDetailsService {
         return userRepository.findAll();
     }
 
-    public void makeAdmin(User user){
+/*    public void makeAdmin(User user){
         logger.debug("Granting admin role to selected user");
         userRepository.makeAdmin(user.getUserId());
     }
@@ -95,7 +96,7 @@ public class UserService implements UserDetailsService {
     public void makeUser(User user){
         logger.debug("Granting user role to selected user");
         userRepository.makeUser(user.getUserId());
-    }
+    }*/
 
     public void completeTask(Task task){
         logger.debug("Marking task as completed");
@@ -114,22 +115,4 @@ public class UserService implements UserDetailsService {
             taskService.printTasksByUser(user);
             }
         }
-
-    @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        User user = userRepository.getUserByEmail(username);
-        if(user != null){
-            return new org.springframework.security.core.userdetails.User(user.getEmail(),
-                    user.getPassword(), mapRolesToAuthorities(user.getRoles()));
-        }else{
-            throw new UsernameNotFoundException("Invalid username or password.");
-        }
-    }
-
-    private Collection<? extends GrantedAuthority> mapRolesToAuthorities(Collection<Role> roles){
-        Collection<? extends GrantedAuthority> mapRoles = roles.stream()
-                .map(role -> new SimpleGrantedAuthority(role.getName()))
-                .collect(Collectors.toList());
-        return mapRoles;
-    }
 }

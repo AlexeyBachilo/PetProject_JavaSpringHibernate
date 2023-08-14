@@ -1,10 +1,14 @@
+com\petproject\security\WebSecurityConfig.class
 com\petproject\controller\TaskController.class
 com\petproject\controller\UserController.class
 com\petproject\service\UserService.class
 com\petproject\service\TaskService.class
 com\petproject\controller\MainController.class
+com\petproject\service\CustomUserDetailsService.class
 com\petproject\entity\Task.class
 com\petproject\Main.class
 com\petproject\repository\UserRepository.class
+com\petproject\repository\RoleRepository.class
+com\petproject\entity\Role.class
 com\petproject\repository\TaskRepository.class
 com\petproject\entity\User.class

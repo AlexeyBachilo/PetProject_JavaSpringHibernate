@@ -1,10 +1,14 @@
 D:\PetProject_JavaSpringHibernate\PetProject\src\main\java\com\petproject\service\UserService.java
+D:\PetProject_JavaSpringHibernate\PetProject\src\main\java\com\petproject\entity\Role.java
 D:\PetProject_JavaSpringHibernate\PetProject\src\main\java\com\petproject\repository\UserRepository.java
+D:\PetProject_JavaSpringHibernate\PetProject\src\main\java\com\petproject\repository\RoleRepository.java
+D:\PetProject_JavaSpringHibernate\PetProject\src\main\java\com\petproject\controller\MainController.java
+D:\PetProject_JavaSpringHibernate\PetProject\src\main\java\com\petproject\service\CustomUserDetailsService.java
+D:\PetProject_JavaSpringHibernate\PetProject\src\main\java\com\petproject\repository\TaskRepository.java
 D:\PetProject_JavaSpringHibernate\PetProject\src\main\java\com\petproject\service\TaskService.java
 D:\PetProject_JavaSpringHibernate\PetProject\src\main\java\com\petproject\entity\Task.java
-D:\PetProject_JavaSpringHibernate\PetProject\src\main\java\com\petproject\controller\MainController.java
 D:\PetProject_JavaSpringHibernate\PetProject\src\main\java\com\petproject\controller\UserController.java
 D:\PetProject_JavaSpringHibernate\PetProject\src\main\java\com\petproject\Main.java
-D:\PetProject_JavaSpringHibernate\PetProject\src\main\java\com\petproject\repository\TaskRepository.java
+D:\PetProject_JavaSpringHibernate\PetProject\src\main\java\com\petproject\security\WebSecurityConfig.java
 D:\PetProject_JavaSpringHibernate\PetProject\src\main\java\com\petproject\controller\TaskController.java
 D:\PetProject_JavaSpringHibernate\PetProject\src\main\java\com\petproject\entity\User.java

@@ -22,7 +22,6 @@ public class TaskService {
     @Lazy
     UserService userService;
 
-
     protected static Logger logger = LogManager.getLogger("TaskServiceLogger");
 
     public void addTask(Task task) {

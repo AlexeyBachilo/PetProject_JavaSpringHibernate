@@ -2,8 +2,8 @@ package com.petproject.controller;
 
 import com.petproject.entity.User;
 import com.petproject.service.UserService;
-import org.apache.logging.log4j.*;
 import jakarta.validation.Valid;
+import org.apache.logging.log4j.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -26,12 +26,6 @@ public class MainController {
     @ModelAttribute("newUserAttribute")
     public User newUser(){
         return new User();
-    }
-
-    @GetMapping("/admin/main")
-    public String mainMenu(){
-        logger.debug("Accessing main menu");
-        return "adminMenu";
     }
 
     @GetMapping("/")
@@ -71,6 +65,13 @@ public class MainController {
             return "registration";
         }
         userService.addUser(user);
-        return "redirect:registration?success";
+        return "redirect:/";
     }
+
+    @GetMapping("/admin/main")
+    public String mainMenu(){
+        logger.debug("Accessing main menu");
+        return "adminMenu";
+    }
+
 }

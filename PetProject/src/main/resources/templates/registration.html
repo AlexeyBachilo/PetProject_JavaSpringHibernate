@@ -9,41 +9,41 @@
 <div th:if="${param.success}">
 	<div class="alert alert-success">You have successfully registered!</div>
 </div>
-<form action="@" th:object="${newUserAttribute}" method="post" th:action="@{/petproject/register/save}">
+<form action="@" th:object="${newUserAttribute}" method="post" th:action="@{petproject/registration}">
 	<table>
 		<tr>
 			<td><label>Login:</label></td>
-			<td><input id="login" name="login" type="text" th:field="*{login}"/></td>
+			<td><input id="login" name="login" type="text" th:field="*{login}" placeholder="Enter Login"/></td>
 			<p th:errors="*{login}" th:if="${#fields.hasErrors('login')}"></p>
 		</tr>
 		<tr>
 			<td><label>Email:</label></td>
-			<td><input id="email" name="email" type="email" th:field="*{email}"></td>
+			<td><input id="email" name="email" type="email" th:field="*{email}" placeholder="Enter Email"></td>
 			<p th:errors="*{email}" th:if="${#fields.hasErrors('email')}"></p>
 		</tr>
 		<tr>
 			<td><label>First Name:</label></td>
-			<td><input id="firstName" name="firstName" type="text" th:field="*{firstName}"/></td>
+			<td><input id="firstName" name="firstName" type="text" th:field="*{firstName}" placeholder="Enter First Name"/></td>
 			<p th:errors="*{firstName}" th:if="${#fields.hasErrors('firstName')}"></p>
 		</tr>
 		<tr>
 			<td><label>Last Name:</label></td>
-			<td><input id="lastName" name="lastName" type="text" th:field="*{lastName}"/></td>
+			<td><input id="lastName" name="lastName" type="text" th:field="*{lastName}" placeholder="Enter Last Name"/></td>
 			<p th:errors="*{lastName}" th:if="${#fields.hasErrors('lastName')}"></p>
 		</tr>
 		<tr>
 			<td><label>Password:</label></td>
-			<td><input type="password" th:field="*{password}"></td>
+			<td><input id="password" name="password" type="password" th:field="*{password}"></td>
 			<p th:errors="*{password}" th:if="${#fields.hasErrors('password')}"></p>
 		</tr>
 		<tr>
 			<td><label>Confirm Password:</label></td>
-			<td><input type="password" th:field="*{passwordConfirm}"></td>
+			<td><input id="passwordConfirm" name="passwordConfirm" type="password" th:field="*{passwordConfirm}"></td>
 			<p th:errors="*{password}" th:if="${#fields.hasErrors('password')}"></p>
 		</tr>
 	</table>
 
-	<input type="submit" value="Register"/>
+	<button type="submit">Register</button>
 </form>
 <p>Have an account? <a href="registerUrl" th:href="@{petproject/login}">Log In!</a></p>
 </body>

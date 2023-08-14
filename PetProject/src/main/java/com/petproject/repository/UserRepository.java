@@ -15,10 +15,10 @@ public interface UserRepository extends JpaRepository<User, Long> {
     User getUserByLogin (@Param("login") String login);
     @Query("SELECT u FROM User u WHERE u.email IN :email")
     User getUserByEmail (@Param("email") String email);
-    @Query("UPDATE User u SET u.grantedroleid IN 1 WHERE u.userId IN :userId")
+/*    @Query("INSERT INTO User u u.roles(userId, roleId) VALUES")
     void makeAdmin(@Param("userId") Long userId);
-    @Query("UPDATE User u SET u.grantedroleid IN 2 WHERE u.userId IN :userId")
+    @Query("UPDATE User u SET u.roles.roleId = 2 WHERE u.userId IN :userId")
     void makeModer(@Param("userId") Long userId);
-    @Query("UPDATE User u SET u.grantedroleid IN 3 WHERE u.userId IN :userId")
-    void makeUser(@Param("userId") Long userId);
+    @Query("UPDATE User u SET u.roles.roleId = 3 WHERE u.userId IN :userId")
+    void makeUser(@Param("userId") Long userId);*/
 }

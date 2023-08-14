@@ -35,7 +35,7 @@ public class User implements Serializable, UserDetails {
     private String lastName;
     @Column(name = "userpoints")
     private int userPoints = 0;
-    @Column(name = "email", nullable = false, unique = true)
+    @Column(name = "email", unique = true)
     private String email;
     @Column(name = "password", nullable = false)
     private String password;
@@ -44,11 +44,9 @@ public class User implements Serializable, UserDetails {
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<Task> tasks = null;
     @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    @JoinTable(
-            name = "roles",
-            @JoinColumns({
-                    @JoinColumn(name = "granteduserid", referencedColumnName = "userId"),
-                    @JoinColumn(name = "roleid", referencedColumnName = "roleId")}))
+    @JoinColumns({
+            @JoinColumn(name = "granteduserid", referencedColumnName = "userId"),
+            @JoinColumn(name = "roleid", referencedColumnName = "roleId")})
     private Set<Role> roles;
 
     @Override
