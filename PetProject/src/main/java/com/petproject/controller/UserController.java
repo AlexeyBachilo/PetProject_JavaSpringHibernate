@@ -4,6 +4,8 @@ import com.petproject.entity.User;
 import com.petproject.service.UserService;
 import org.apache.logging.log4j.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
@@ -16,6 +18,8 @@ import java.util.List;
 public class UserController {
 
     protected static Logger logger = LogManager.getLogger("UserControllerLogger");
+
+    Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
     @Autowired
     UserService userService;

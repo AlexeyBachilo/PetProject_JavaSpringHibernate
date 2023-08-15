@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=URF-8">
 	<title>PetProject</title>
@@ -12,21 +13,21 @@
 	<div th:if="${param.logout}">
 		<div class="alert alert-success">You have been logged out.</div>
 	</div>
-	<form action="@" method="post" th:action="@{/login}">
+	<form action="@" method="post" th:action="@{/petproject/login}">
 		<table>
 			<tr>
 				<td><label>Email*:</label></td>
-				<td><input type="text" id="username" name="username" placeholder="Email"/></td>
+				<td><input type="text" class="form-control" id="username" name="username" placeholder="Email"/></td>
 			</tr>
 			<tr>
 				<td><label>Password:</label></td>
-				<td><input type="password" id="password" name="password" placeholder="Password"/></td>
+				<td><input type="password" class="form-control" id="password" name="password" placeholder="Password"/></td>
 			</tr>
 		</table>
 
-		<button type="submit">Login</button>
+		<button type="submit" class="btn btn-primary btn-block">Login</button>
 		<br>
-		<p>Don't have an account? <a href="registerUrl" th:href="@{/registration}">Create one!</a></p>
+		<p>Don't have an account? <a href="registerUrl" th:href="@{/petproject/registration}">Create one!</a></p>
 	</form>
 </body>
 </html>

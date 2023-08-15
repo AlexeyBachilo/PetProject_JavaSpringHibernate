@@ -4,6 +4,7 @@ import com.petproject.entity.Role;
 import com.petproject.entity.Task;
 import com.petproject.entity.User;
 
+import com.petproject.repository.RoleRepository;
 import com.petproject.repository.UserRepository;
 import org.apache.logging.log4j.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,12 +28,14 @@ import java.util.stream.Collectors;
 
 @Service
 @Transactional(propagation = Propagation.REQUIRES_NEW)
-public class UserService {
+public class UserService implements UserDetailsService{
     @Autowired
     @Lazy
     BCryptPasswordEncoder passwordEncoder;
     @Autowired
     UserRepository userRepository;
+    @Autowired
+    RoleRepository roleRepository;
     @Autowired
     @Lazy
     TaskService taskService;
@@ -41,7 +44,7 @@ public class UserService {
 
     public void addUser(User user) {
         logger.debug("Adding user");
-        user.setRoles(Collections.singleton(new Role(3L,"ROLE_USER")));
+        user.setRoles(Collections.singleton(new Role(3L, "ROLE_USER")));
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         userRepository.saveAndFlush(user);
     }
@@ -65,12 +68,12 @@ public class UserService {
 
     public User getUserByLogin(String login) {
         logger.debug("Getting user by Login");
-        return (Optional.of(userRepository.getUserByLogin(login))).orElse(new User());
+        return userRepository.getUserByLogin(login);
     }
 
     public User getUserByEmail(String email){
         logger.debug("Getting user by email");
-        return (Optional.of(userRepository.getUserByEmail(email))).orElse(new User());
+        return userRepository.getUserByEmail(email);
     }
 
     public User getUserByTask(Task task) {
@@ -83,20 +86,21 @@ public class UserService {
         return userRepository.findAll();
     }
 
-/*    public void makeAdmin(User user){
+    public void makeAdmin(User user){
         logger.debug("Granting admin role to selected user");
-        userRepository.makeAdmin(user.getUserId());
+        user.setRoles(Collections.singleton(new Role(1L, "ROLE_ADMIN")));
+        updateUser(user);
     }
 
     public void makeModer(User user){
         logger.debug("Granting moderator role to selected user");
-        userRepository.makeModer(user.getUserId());
-    }
+        user.setRoles(Collections.singleton(new Role(2L, "ROLE_MODERATOR")));
+        updateUser(user);    }
 
     public void makeUser(User user){
         logger.debug("Granting user role to selected user");
-        userRepository.makeUser(user.getUserId());
-    }*/
+        user.setRoles(Collections.singleton(new Role(3L, "ROLE_USER")));
+        updateUser(user);    }
 
     public void completeTask(Task task){
         logger.debug("Marking task as completed");
@@ -115,4 +119,21 @@ public class UserService {
             taskService.printTasksByUser(user);
             }
         }
+
+    @Override
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        User user = userRepository.getUserByEmail(username);
+        if(user != null){
+            return new org.springframework.security.core.userdetails.User(user.getEmail(),
+                    user.getPassword(), mapRolesToAuthorities(user.getRoles()));
+        }else{
+            throw new UsernameNotFoundException("Invalid username or password.");
+        }
+    }
+
+    private Collection<? extends GrantedAuthority> mapRolesToAuthorities(Collection<Role> roles){
+        return roles.stream()
+                .map(role -> new SimpleGrantedAuthority(role.getName()))
+                .collect(Collectors.toList());
+    }
 }

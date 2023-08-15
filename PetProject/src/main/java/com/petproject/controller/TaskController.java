@@ -6,6 +6,9 @@ import com.petproject.service.TaskService;
 import com.petproject.service.UserService;
 import org.apache.logging.log4j.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
@@ -19,7 +22,6 @@ import java.util.List;
 public class TaskController {
 
     protected static Logger logger = LogManager.getLogger("TaskControllerLogger");
-
     @Autowired
     UserService userService;
     @Autowired
@@ -39,41 +41,42 @@ public class TaskController {
         return taskService.getTaskById(taskId);
     }
 
-    @ModelAttribute("userTaskAttribute")
-    public List<Task> userTasks(@RequestParam(value = "user")User user){
-        return taskService.getTasksByUser(user);
-    }
-
     @GetMapping(value = "/admin/tasks")
     public String getTasks(Model model){
         logger.debug("ADMIN: Recieved request to show all tasks");
+        model.addAttribute("role", "admin");
         model.addAttribute("tasksAttribute", this.taskService.getAllTasks());
         return "taskMenu";
     }
 
     @GetMapping(value = "/user/tasks")
-    public String getUserTasks(@RequestParam("user")User user, Model model){
+    public String getUserTasks(@AuthenticationPrincipal String username, Model model){
         logger.debug("USER: Recieved request to show tasks");
-        model.addAttribute("tasksAttribute", this.taskService.getTasksByUser(user));
+        model.addAttribute("role", "user");
+        User user = userService.getUserByEmail(username);
+        model.addAttribute("tasksAttribute", taskService.getTasksByUser(user));
         return "taskMenu";
     }
 
     @GetMapping(value = "/admin/tasks/add")
     public String addTask(Model model){
         logger.debug("ADMIN: Recieved request to show add task page");
+        model.addAttribute("role", "admin");
         List<User> options = userService.getAllUsers();
         model.addAttribute("options",options);
         return "addTask";
     }
 
     @GetMapping(value = "/user/tasks/add")
-    public String addUserTask(@RequestParam("user")User user, Model model){
+    public String addUserTask(@AuthenticationPrincipal String username, Model model){
         logger.debug("USER: Recieved request to show add task page");
+        model.addAttribute("role", "user");
+        User user = userService.getUserByEmail(username);
         model.addAttribute("options", user);
         return "addTask";
     }
 
-    @PostMapping(value = "/tasks/add")
+    @PostMapping(value = {"/admin/tasks/add", "/user/tasks/add"})
     public String addedTask(final Task task, final BindingResult bindingResult, final ModelMap model){
         logger.debug("Recieved request to add new task");
         if(bindingResult.hasErrors()){
@@ -83,7 +86,7 @@ public class TaskController {
         return "addedTask";
     }
 
-    @GetMapping(value = "/tasks/delete")
+    @GetMapping(value = {"/admin/tasks/delete","/user/tasks/delete"})
     public String deleteTask(@RequestParam(value = "id") final Long taskId, final ModelMap model){
         logger.debug("Recieved request to delete task");
         Task task = this.taskService.getTaskById(taskId);
@@ -95,20 +98,23 @@ public class TaskController {
     @GetMapping(value = "/admin/tasks/update")
     public String updateTask(Model model){
         logger.debug("ADMIN: Recieved request to show update task page");
+        model.addAttribute("role", "admin");
         List<User> options = userService.getAllUsers();
         model.addAttribute("options",options);
         return "updateTask";
     }
 
     @GetMapping(value = "/user/tasks/update")
-    public String updateUserTask(@RequestParam("user")User user, Model model){
+    public String updateUserTask(@AuthenticationPrincipal String username, Model model){
         logger.debug("USER: Recieved request to update task");
+        model.addAttribute("role", "user");
+        User user = userService.getUserByEmail(username);
         model.addAttribute("options", user);
         return "updateTask";
     }
 
-    @PostMapping(value = "/tasks/update")
-    public String updatedTask( @RequestParam(value = "id")final Long taskId, final Task task, final BindingResult bindingResult, final ModelMap model){
+    @PostMapping(value = {"/admin/tasks/update", "/user/tasks/update"})
+    public String updatedTask(@RequestParam(value = "id")final Long taskId, final Task task, final BindingResult bindingResult, final ModelMap model){
         logger.debug("Recieved request to update task");
         if(bindingResult.hasErrors()){
             return "updateTask";

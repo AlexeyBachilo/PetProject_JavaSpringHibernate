@@ -1,14 +1,30 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
     <meta charset="UTF-8"/>
     <title>Petproject</title>
 </head>
 <body>
  <h1>Welcome to PetProject!</h1>
+ <div sec:authorize="isAuthenticated()">
+     <h2>Hello, <span sec:authentication="name"></span></h2>
+ </div>
  <br>
- <h3><a href="loginUrl" th:href="@{http://localhost:8080/petproject/login}">Log In</a></h3>
+ <div sec:authorize="hasRole('ROLE_ADMIN')">
+     <h3><a th:href="@{/petproject/admin/main}">Admin Menu</a></h3>
+ </div>
+ <div sec:authorize="hasRole('ROLE_USER')">
+     <h3><a th:href="@{/petproject/user/tasks}">Your Tasks</a></h3>
+ </div>
  <br>
- <h3><a href="registerUrl" th:href="@{http://localhost:8080/petproject/registration}">Create An Account</a></h3>
+ <div sec:authorize="isAuthenticated()">
+     <h3><a href="logOutUrl" th:href="@{http://localhost:8080/petproject/logout}">Logout</a></h3>
+ </div>
+ <div sec:authorize="isAnonymous()">
+     <h3><a href="loginUrl" th:href="@{http://localhost:8080/petproject/login}">Log In</a></h3>
+     <br>
+     <h3><a href="registerUrl" th:href="@{http://localhost:8080/petproject/registration}">Create An Account</a></h3>
+ </div>
 </body>
 </html>

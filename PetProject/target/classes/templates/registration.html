@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 	<title>PetProject</title>
@@ -9,7 +10,7 @@
 <div th:if="${param.success}">
 	<div class="alert alert-success">You have successfully registered!</div>
 </div>
-<form action="@" th:object="${newUserAttribute}" method="post" th:action="@{petproject/registration}">
+<form action="@" th:object="${newUserAttribute}" method="post" th:action="@{/petproject/registration}">
 	<table>
 		<tr>
 			<td><label>Login:</label></td>
@@ -45,6 +46,6 @@
 
 	<button type="submit">Register</button>
 </form>
-<p>Have an account? <a href="registerUrl" th:href="@{petproject/login}">Log In!</a></p>
+<p>Have an account? <a href="registerUrl" th:href="@{/petproject/login}">Log In!</a></p>
 </body>
 </html>

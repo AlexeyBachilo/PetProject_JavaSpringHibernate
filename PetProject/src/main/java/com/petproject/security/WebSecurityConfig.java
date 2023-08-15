@@ -1,6 +1,6 @@
 package com.petproject.security;
 
-import com.petproject.service.CustomUserDetailsService;
+import com.petproject.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -19,7 +19,7 @@ import org.springframework.web.servlet.handler.HandlerMappingIntrospector;
 @EnableWebSecurity
 public class WebSecurityConfig {
     @Autowired
-    CustomUserDetailsService customUserDetailsService;
+    UserService userService;
 
     @Bean
     public static PasswordEncoder passwordEncoder(){
@@ -30,21 +30,24 @@ public class WebSecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http, MvcRequestMatcher.Builder mvc) throws Exception{
         http.csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests((auth) -> auth
-                        .requestMatchers(mvc.pattern("/registration")).anonymous()
-                        .requestMatchers(mvc.pattern("/admin/**")).hasRole("ADMIN")
-                        .requestMatchers(mvc.pattern("/admin/tasks/**")).hasRole("MODERATOR")
-                        .requestMatchers(mvc.pattern("/user/tasks/**")).hasRole("USER")
-                        .requestMatchers(mvc.pattern("/")).permitAll()
-                        .requestMatchers(mvc.pattern("/resources/**")).permitAll()
-                        .anyRequest().anonymous())
+                        .requestMatchers(mvc.pattern("/petproject/registration")).anonymous()
+                        .requestMatchers(mvc.pattern("/petproject/admin/**")).hasRole("ADMIN")
+                        .requestMatchers(mvc.pattern("/petproject/admin/tasks"),mvc.pattern("/petproject/admin/tasks/**")).hasAnyRole("MODERATOR", "ADMIN")
+                        .requestMatchers(mvc.pattern("/petproject/user/tasks"),mvc.pattern("/petproject/user/tasks/**")).hasAnyRole("USER", "MODERATOR", "ADMIN")
+                        .requestMatchers(mvc.pattern("/petproject/")).permitAll()
+                        .requestMatchers(mvc.pattern("/petproject/resources/**")).permitAll()
+                        .anyRequest().authenticated())
                 .formLogin((login) -> login
                         .loginPage("/petproject/login")
-                        .loginProcessingUrl("/petproject/authenticateUser")
+                        .loginProcessingUrl("/petproject/login")
                         .defaultSuccessUrl("/petproject/")
+                        .failureUrl("/petproject/login?error=true")
                         .permitAll()
                 ).logout((logout) -> logout
-                        .invalidateHttpSession(true)
+                        .logoutRequestMatcher(mvc.pattern("/petproject/logout"))
                         .clearAuthentication(true)
+                        .deleteCookies("JSESSIONID")
+                        .invalidateHttpSession(true)
                         .logoutSuccessUrl("/login?logout")
                         .permitAll());
         return http.build();
@@ -59,7 +62,7 @@ public class WebSecurityConfig {
     @Autowired
     public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception{
         auth
-                .userDetailsService(customUserDetailsService)
+                .userDetailsService(userService)
                 .passwordEncoder(passwordEncoder());
     }
 }

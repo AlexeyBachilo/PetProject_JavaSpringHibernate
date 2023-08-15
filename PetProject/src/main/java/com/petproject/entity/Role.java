@@ -5,10 +5,10 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import jakarta.persistence.*;
 import org.springframework.security.core.GrantedAuthority;
 
 import java.io.Serializable;
+import java.util.Set;
 
 @Getter
 @Setter
@@ -22,6 +22,18 @@ public class Role implements Serializable, GrantedAuthority {
     private Long roleId;
     @Column(name = "name")
     private String name;
+    @Transient
+    @ManyToMany(mappedBy = "roles")
+    private Set<User> users;
+
+    public Role(Long id){
+        this.roleId = id;
+    }
+
+    public Role(Long id, String name){
+        this.roleId = id;
+        this.name = name;
+    }
 
     @Override
     public String getAuthority() {

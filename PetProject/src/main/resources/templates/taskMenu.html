@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=URF-8">
     <title>PetProject</title>
@@ -29,15 +30,15 @@
             <td th:text="${task.taskPoints}"/>
             <td th:text="${task.completed} ? 'Yes' : 'No'">Yes</td>
             <td th:text="${task.user.login}"/>
-            <td><a href="editTaskUrl" th:href="@{/petproject/main/tasks/update(id=${task.taskId})}">Edit</a></td>
-            <td><a href="deleteTaskUrl" th:href="@{/petproject/main/tasks/delete(id=${task.taskId})}">Delete</a></td>
-            <td><a href="addTaskUrl" th:href="@{/petproject/main/tasks/add(userId=${task.user.userId})}">Add</a></td>
+            <td><a href="editTaskUrl" th:href="@{/petproject/{path}/tasks/update(id=${task.taskId}, path=${role})}">Edit</a></td>
+            <td><a href="deleteTaskUrl" th:href="@{/petproject/{path}/tasks/delete(id=${task.taskId}, path=${role})}">Delete</a></td>
+            <td><a href="addTaskUrl" th:href="@{/petproject/{path}/tasks/add(userId=${task.user.userId}, path=${role})}">Add</a></td>
         </tr>
         </tbody>
     </table>
 </div>
-<span th:if="${#lists.isEmpty(tasksAttribute)}">There are currently no tasks in the list. <a href="addTaskUrl" th:href="@{/petproject/main/tasks/add}">Add</a> new task.</span>
-<p> Return to <a href="mainUrl" th:href="@{http://localhost:8080/petproject/main}">Main Menu</a></p>
+<span th:if="${#lists.isEmpty(tasksAttribute)}">There are currently no tasks in the list. <a th:href="@{/petproject/{path}/tasks/add(path=${role})}">Add</a> new task.</span>
+<p> Return to <a href="mainUrl" th:href="@{http://localhost:8080/petproject/}">Main Menu</a></p>
 
 </body>
 </html>

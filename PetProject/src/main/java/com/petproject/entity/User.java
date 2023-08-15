@@ -6,8 +6,10 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.io.Serializable;
 import java.util.Collection;
@@ -22,6 +24,7 @@ import java.util.Set;
 @Entity
 @Table(name = "users")
 public class User implements Serializable, UserDetails {
+
     @Id
     @SequenceGenerator(name = "user_seq", sequenceName = "user_user_id_seq", allocationSize = 0)
     @GeneratedValue(strategy = GenerationType.IDENTITY, generator = "user_seq")
@@ -44,10 +47,7 @@ public class User implements Serializable, UserDetails {
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<Task> tasks = null;
     @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    @JoinColumns({
-            @JoinColumn(name = "granteduserid", referencedColumnName = "userId"),
-            @JoinColumn(name = "roleid", referencedColumnName = "roleId")})
-    private Set<Role> roles;
+    private Set<Role> roles = null;
 
     @Override
     public boolean equals(Object o) {
