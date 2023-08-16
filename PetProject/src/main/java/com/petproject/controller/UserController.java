@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @Controller
-@RequestMapping("/petproject/admin/main")
+@RequestMapping("/petproject/admin")
 public class UserController {
 
     protected static Logger logger = LogManager.getLogger("UserControllerLogger");

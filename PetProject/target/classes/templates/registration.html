@@ -35,7 +35,6 @@
 		<tr>
 			<td><label>Password:</label></td>
 			<td><input id="password" name="password" type="password" th:field="*{password}"></td>
-			<p th:errors="*{password}" th:if="${#fields.hasErrors('password')}"></p>
 		</tr>
 		<tr>
 			<td><label>Confirm Password:</label></td>

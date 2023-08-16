@@ -48,7 +48,7 @@ public class MainController {
     }
 
     @PostMapping("/registration")
-    public String registered(@Valid @ModelAttribute("newUserAttribute") User user, BindingResult bindingResult, Model model){
+    public String registered(@Valid final User user, BindingResult bindingResult, Model model){
         User existingUserWithMail = userService.getUserByEmail(user.getEmail());
         User existingUserWithLogin = userService.getUserByLogin(user.getLogin());
         if(existingUserWithMail != null && existingUserWithMail.getEmail() != null && !existingUserWithMail.getEmail().isEmpty()){
@@ -64,7 +64,7 @@ public class MainController {
             model.addAttribute("user", user);
             return "registration";
         }
-        userService.addUser(user);
+        this.userService.addUser(user);
         return "redirect:/";
     }
 

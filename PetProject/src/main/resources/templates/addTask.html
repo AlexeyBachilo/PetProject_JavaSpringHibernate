@@ -13,8 +13,7 @@
             <td><label>Assigned User:</label></td>
             <td>
                 <select th:field="*{user}">
-                    <option sec:authorize="hasRole('ROLE_ADMIN')" th:each="user: ${options}" th:value="${user.userId}" th:text="${user.login}"></option>
-                    <option sec:authorize="hasRole('ROLE_USER')" th:value="${options.userId}" th:text="${options.login}" selected disabled></option>
+                    <option th:each="user: ${options}" th:value="${user.userId}" th:text="${user.login}"></option>
                 </select>
             </td>
         </tr>
@@ -38,6 +37,8 @@
 
     <input type="submit" value="Save"/>
 </form>
+<p> Return to <a href="mainUrl" th:href="@{http://localhost:8080/petproject/}">Main Menu</a></p>
+
 <p> Return to <a href="userMenuUrl" th:href="@{http://localhost:8080/petproject/{path}/tasks(path=${role})}">Task Menu</a></p>
 </body>
 </html>

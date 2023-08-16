@@ -20,10 +20,7 @@ import org.springframework.context.annotation.Lazy;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -35,16 +32,19 @@ public class UserService implements UserDetailsService{
     @Autowired
     UserRepository userRepository;
     @Autowired
-    RoleRepository roleRepository;
-    @Autowired
     @Lazy
     TaskService taskService;
+    @Autowired
+    @Lazy
+    RoleService roleService;
 
     protected static Logger logger = LogManager.getLogger("UserServiceLogger");
 
     public void addUser(User user) {
         logger.debug("Adding user");
-        user.setRoles(Collections.singleton(new Role(3L, "ROLE_USER")));
+        user.setUserId(nextId());
+        Role role = new Role(roleService.nextId(), "ROLE_USER", Set.of(user));
+        user.setRoles(Collections.singleton(role));
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         userRepository.saveAndFlush(user);
     }
@@ -119,6 +119,13 @@ public class UserService implements UserDetailsService{
             taskService.printTasksByUser(user);
             }
         }
+
+    public Long nextId(){
+        List<User> users = getAllUsers();
+        int count = users.size();
+        Long id = users.get(count-1).getUserId();
+        return id+1;
+    }
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {

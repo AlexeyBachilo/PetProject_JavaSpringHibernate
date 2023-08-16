@@ -15,6 +15,7 @@ import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import java.security.Principal;
 import java.util.List;
 
 @Controller
@@ -50,10 +51,10 @@ public class TaskController {
     }
 
     @GetMapping(value = "/user/tasks")
-    public String getUserTasks(@AuthenticationPrincipal String username, Model model){
+    public String getUserTasks(Principal username, Model model){
         logger.debug("USER: Recieved request to show tasks");
         model.addAttribute("role", "user");
-        User user = userService.getUserByEmail(username);
+        User user = userService.getUserByEmail(username.getName());
         model.addAttribute("tasksAttribute", taskService.getTasksByUser(user));
         return "taskMenu";
     }
@@ -68,10 +69,10 @@ public class TaskController {
     }
 
     @GetMapping(value = "/user/tasks/add")
-    public String addUserTask(@AuthenticationPrincipal String username, Model model){
+    public String addUserTask(Principal username, Model model){
         logger.debug("USER: Recieved request to show add task page");
         model.addAttribute("role", "user");
-        User user = userService.getUserByEmail(username);
+        User user = userService.getUserByEmail(username.getName());
         model.addAttribute("options", user);
         return "addTask";
     }
@@ -105,10 +106,10 @@ public class TaskController {
     }
 
     @GetMapping(value = "/user/tasks/update")
-    public String updateUserTask(@AuthenticationPrincipal String username, Model model){
+    public String updateUserTask(Principal username, Model model){
         logger.debug("USER: Recieved request to update task");
         model.addAttribute("role", "user");
-        User user = userService.getUserByEmail(username);
+        User user = userService.getUserByEmail(username.getName());
         model.addAttribute("options", user);
         return "updateTask";
     }
