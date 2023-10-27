@@ -2,7 +2,7 @@
     <session-factory>
 <!--        <property name="connection.url">jdbc:mysql://localhost/userDB</property>
         <property name="connection.username">root</property>
-        <property name="connection.password">Pisos_kok1245</property>-->
+        <property name="connection.password">password</property>-->
 <!--        <property name="connection.User_class">com.petproject.entity.User</property>
         <property name="current_session_context_class">thread</property>-->
         <property name="show_sql">true</property>
